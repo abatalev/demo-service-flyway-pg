@@ -3,3 +3,23 @@ spring:
     banner-mode: "off"
   application:
     name: dbservice
+  flyway:
+    enabled: false
+  datasource:
+    driver: org.postgresql.Driver
+    url: jdbc:postgresql://${DB_HOST}:5432/public
+    username: ${DB_USER}
+    password: ${DB_PASS}    
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolSize: 5
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true    

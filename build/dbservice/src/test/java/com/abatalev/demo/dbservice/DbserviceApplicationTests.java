@@ -1,13 +1,12 @@
-package com.abatalev.demo.dbservice_with_flyway;
+package com.abatalev.demo.dbservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DbserviceWithFlywayApplicationTests {
-
+class DbserviceApplicationTests {
+	
 	@Test
 	void contextLoads() {
 	}
-
 }
