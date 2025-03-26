@@ -14,4 +14,14 @@ if ! docker buildx build -f Dockerfile.dbservice -t "abatalev/dbservice:${VERSIO
     echo "### aborted"
 fi
 
-docker run --rm -p 8080:8080 abatalev/dbservice:0.0.1
+echo "### buiild jar for initdb"
+cd "${CDIR}/build/initdb" || exit
+mvn clean install
+
+echo "### create docker image for initdb"
+cd "${CDIR}/build" || exit
+if ! docker buildx build -f Dockerfile.initdb -t "abatalev/initdb:${VERSION}" .; then
+    echo "### aborted"
+fi
+
+#docker run --rm -p 8080:8080 abatalev/dbservice:0.0.1
