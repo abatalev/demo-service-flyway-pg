@@ -5,30 +5,29 @@ import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
 @Testcontainers
 public class InitDbTest {
 
-    private static final String DOCKER_IMAGE = "postgres:13";
-    private static final String DB_NAME = "postgres";
-    private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "postgres";
-    private static final String INIT_SCRIPT_PATH = "sql/initialize.sql";
-
     @Container
-    private static PostgreSQLContainer container = new PostgreSQLContainer<>(DOCKER_IMAGE)
-            .withDatabaseName(DB_NAME)
-            .withUsername(USERNAME)
-            .withPassword(PASSWORD)
-            .withInitScript(INIT_SCRIPT_PATH);
+    private static PostgreSQLContainer container = 
+            new PostgreSQLContainer<>(DockerImageName
+                .parse("abatalev/postgres:0.0.1")
+                .asCompatibleSubstituteFor("postgres"))
+            .withPassword("postgres");
     
     @Test 
     void migrate() {
-        container.withDatabaseName("testdb");
+
+        String url =  "jdbc:postgresql://"+container.getHost()+":"+container.getMappedPort(5432)+"/test_db?loggerLevel=OFF";
+        System.err.println("URL-1: "+ container.getJdbcUrl());
+        System.err.println("URL-2: "+ url);
+
         var flyway = Flyway.configure()
             .locations("filesystem:src/sql")
-            .schemas("public")
-            .dataSource(container.getJdbcUrl(), container.getUsername(), container.getPassword())
+            .schemas("test_schema")
+            .dataSource(url, "test_admin", "qwerty")
             .load();
         flyway.info();
         flyway.migrate();

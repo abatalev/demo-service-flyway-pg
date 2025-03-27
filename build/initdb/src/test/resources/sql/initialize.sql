@@ -1,4 +1,0 @@
-CREATE USER ro_user;
-CREATE USER test;
-
-CREATE DATABASE testdb;

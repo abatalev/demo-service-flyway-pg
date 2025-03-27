@@ -1,4 +1,5 @@
 FROM flyway/flyway:11.4-alpine
-COPY initdb/src/sql /flyway/
+COPY initdb/flyway.conf /flyway/flyway.conf
+COPY initdb/src/sql /flyway/sql
 WORKDIR /flyway/
 CMD [ "migrate" ]
