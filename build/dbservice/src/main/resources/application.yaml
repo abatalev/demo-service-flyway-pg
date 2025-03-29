@@ -7,18 +7,24 @@ spring:
     enabled: false
   datasource:
     driver: org.postgresql.Driver
-    url: jdbc:postgresql://${DB_HOST}:5432/public
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/test_db?currentSchema=test_schema
     username: ${DB_USER}
-    password: ${DB_PASS}    
+    password: ${DB_PASS}
     hikari:
       connectionTimeout: 20000
       maximumPoolSize: 5
+
+logging:
+  level:
+    root: WARN
 
 management:
   endpoints:
     web:
       exposure:
         include: health,prometheus
+    health:
+      show-details: always
   metrics:
     export:
       prometheus:
