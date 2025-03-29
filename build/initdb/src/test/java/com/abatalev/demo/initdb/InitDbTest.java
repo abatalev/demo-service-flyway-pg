@@ -15,15 +15,13 @@ public class InitDbTest {
             new PostgreSQLContainer<>(DockerImageName
                 .parse("abatalev/postgres:0.0.1")
                 .asCompatibleSubstituteFor("postgres"))
+            .withDatabaseName("postgres")
+            .withUsername("postgres")  
             .withPassword("postgres");
     
     @Test 
     void migrate() {
-
         String url =  "jdbc:postgresql://"+container.getHost()+":"+container.getMappedPort(5432)+"/test_db?loggerLevel=OFF";
-        System.err.println("URL-1: "+ container.getJdbcUrl());
-        System.err.println("URL-2: "+ url);
-
         var flyway = Flyway.configure()
             .locations("filesystem:src/sql")
             .schemas("test_schema")
