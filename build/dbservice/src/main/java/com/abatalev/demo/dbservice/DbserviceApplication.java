@@ -9,5 +9,4 @@ public class DbserviceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DbserviceApplication.class);
 	}
-
 }
