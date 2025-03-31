@@ -16,7 +16,7 @@ spring:
 
 logging:
   level:
-    root: WARN
+    root: INFO
 
 management:
   endpoints:
@@ -28,4 +28,42 @@ management:
   metrics:
     export:
       prometheus:
-        enabled: true    
+        enabled: true
+  otlp:
+    tracing:
+      endpoint: http://${OTLP_HOST}:4318/v1/traces
+      timeout: 10s
+    metrics:
+      export:
+        url: http://${OTLP_HOST}:4318/v1/metrics
+        step: 5s
+
+  tracing:
+    enabled: true
+    sampling:
+      probability: 1
+
+  opentelemetry:
+    resource-attributes:
+      "service-name": ${spring.application.name}
+
+otel:
+  traces.exporter: otlp
+  logs.exporter: otlp
+  metrics.exporter: otlp
+  metric.export.interval: 5000 #Export metrics each five seconds
+  instrumentation:
+    micrometer.enabled: true #Enabe Micrometer metrics bridge
+    jdbc.enabled: true
+    logback-mdc.enabled: true
+  exporter:
+    otlp:
+      endpoint: http://${OTLP_HOST}:4318
+
+  propagators:
+    - tracecontext
+  resource:
+    attributes:
+      service:
+        name: ${spring.application.name}
+        namespace: x4

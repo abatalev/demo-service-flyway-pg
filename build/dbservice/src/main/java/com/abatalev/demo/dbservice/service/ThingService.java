@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.abatalev.demo.dbservice.model.Thing;
 
+import io.micrometer.core.annotation.Timed;
+
 @Service
 public class ThingService {
 
@@ -22,6 +24,7 @@ public class ThingService {
         jdbcTemplate.update("INSERT INTO a (aa) VALUES (?)", thing.name);
     }
 
+    @Timed
     public List<Thing> findAll() {
         return (List<Thing>) jdbcTemplate.query("SELECT aa FROM test_schema.a", (rs, rowNum) -> new Thing(rs.getString("AA")) );
     }

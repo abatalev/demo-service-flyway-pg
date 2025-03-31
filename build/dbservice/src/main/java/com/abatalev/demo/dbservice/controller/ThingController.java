@@ -2,6 +2,8 @@ package com.abatalev.demo.dbservice.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +15,7 @@ import com.abatalev.demo.dbservice.service.ThingService;
 
 @RestController
 public class ThingController {
-
+    private static Logger log = LoggerFactory.getLogger(ThingController.class);
     private final ThingService service;
 
     @Autowired
@@ -23,6 +25,7 @@ public class ThingController {
 
     @GetMapping("/things")
     List<Thing> all() {
+        log.info("run all");
         return service.findAll();
     }
 

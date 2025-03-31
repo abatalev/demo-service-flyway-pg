@@ -1,10 +1,8 @@
 package com.abatalev.demo.dbservice.service;
 
-import javax.sql.DataSource;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -18,6 +16,7 @@ public class ThingServiceTest {
 
     @BeforeAll
     static void init() {
+        System.setProperty("OTLP_HOST", "example.com");
         adapter = new PostgresAdapter();
     }
 

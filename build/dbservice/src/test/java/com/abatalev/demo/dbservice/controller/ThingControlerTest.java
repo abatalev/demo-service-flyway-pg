@@ -29,6 +29,7 @@ public class ThingControlerTest {
 
     @BeforeAll
     static void init() {
+        System.setProperty("OTLP_HOST", "example.com");
         log.info("init - started");
         adapter = new PostgresAdapter();
         log.info("init - done");
