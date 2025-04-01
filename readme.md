@@ -10,9 +10,6 @@
   - [x] use grafana for ui
   - [ ] use alertmanager for alerts :-)
 
-- [ ] test in docker
-  - use grafana k6
-
 - [ ] use stub-service
   - add stub
     - [mock-server](https://www.mock-server.com/) ?
