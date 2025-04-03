@@ -16,14 +16,14 @@ Grafana Dashboard
   - [x] use grafana for ui
   - [ ] use alertmanager for alerts :-)
 
-- [ ] use stub-service
-  - add stub
-    - [mock-server](https://www.mock-server.com/) ?
-  - modify dbservice
-    - use webclient (get author name by id) > get http://stub/author/{i}
+- [ ] k6 add test for post http://dbservice:8080/things
 
 - [ ] versioning
   - use /api/vX/ for all endpoints
+
+- [ ] add pitest
+
+- [ ] add info of build
 
 - [ ] documentation
   - architecture 
