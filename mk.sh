@@ -11,7 +11,7 @@ if ! docker buildx build -f Dockerfile.postgres -t "abatalev/postgres:${VERSION}
     exit
 fi
 
-echo "### buiild jar for initdb"
+echo "### build jar for initdb"
 cd "${CDIR}/build/initdb" || exit
 if ! mvn clean install; then
     echo "### aborted - initdb"
@@ -25,7 +25,21 @@ if ! docker buildx build -f Dockerfile.initdb -t "abatalev/initdb:${VERSION}" .;
     exit
 fi
 
-echo "### buiild jar for dbservice"
+echo "### build jar for stub"
+cd "${CDIR}/build/stub" || exit
+if ! mvn clean install; then
+    echo "### aborted - stub"
+    exit
+fi
+
+echo "### create docker image for stub"
+cd "${CDIR}/build" || exit
+if ! docker buildx build -f Dockerfile.stub -t "abatalev/stub:${VERSION}" .; then
+    echo "### aborted - abatalev/stub"
+    exit
+fi
+
+echo "### build jar for dbservice"
 cd "${CDIR}/build/dbservice" || exit
 if ! mvn clean install; then
     echo "### aborted - dbservice"

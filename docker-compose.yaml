@@ -16,7 +16,17 @@ services:
     depends_on:
       - db
     networks:
-      - dbservice        
+      - dbservice 
+
+  stub:
+    image: abatalev/stub:0.0.1
+    environment:
+      OTLP_HOST: otel 
+      OTLP_DISABLED: false
+    depends_on:
+      - otel
+    networks:
+      - dbservice       
 
   dbservice:
     image: abatalev/dbservice:0.0.1
@@ -25,11 +35,14 @@ services:
       DB_USER: test_user
       DB_PASS: qwerty
       DB_PORT: 5432
+      OTLP_DISABLED: false
       OTLP_HOST: otel
+      OWNER_HOST: stub
     ports:
       - "8090:8080"  
     depends_on:
       - db
+      - stub
       - otel
     networks:
       - dbservice
