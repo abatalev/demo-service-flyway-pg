@@ -1,3 +1,8 @@
+app:
+  owner:
+    host: "${OWNER_HOST}"
+    port: "${OWNER_PORT}"
+
 spring:
   main:
     banner-mode: "off"
@@ -48,6 +53,7 @@ management:
       "service-name": ${spring.application.name}
 
 otel:
+  sdk.disabled: ${OTLP_DISABLED}
   traces.exporter: otlp
   logs.exporter: otlp
   metrics.exporter: otlp

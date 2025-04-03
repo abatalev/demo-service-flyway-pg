@@ -9,7 +9,10 @@ class DbserviceApplicationTests {
 	
 	@BeforeAll 
 	static void init(){
-		System.setProperty("OTLP_HOST", "example.com");
+		System.setProperty("OTLP_HOST", "otlp.example.com");
+		System.setProperty("OTLP_DISABLED", "true");
+		System.setProperty("OWNER_HOST", "owner.example.com");
+		System.setProperty("OWNER_PORT", "8080");
 	}
 
 	@Test

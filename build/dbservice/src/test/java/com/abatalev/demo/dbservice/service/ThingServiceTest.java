@@ -1,6 +1,9 @@
 package com.abatalev.demo.dbservice.service;
 
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,25 +11,40 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.abatalev.demo.dbservice.model.Thing;
 import com.abatalev.demo.dbservice.utils.PostgresAdapter;
+import com.abatalev.demo.dbservice.utils.StubAdapter;
 
 @SpringBootTest
 public class ThingServiceTest {
 
-    static PostgresAdapter adapter;
+    static PostgresAdapter postgres;
+    static StubAdapter stub;
 
     @BeforeAll
     static void init() {
         System.setProperty("OTLP_HOST", "example.com");
-        adapter = new PostgresAdapter();
+		System.setProperty("OTLP_DISABLED", "true");
+        postgres = new PostgresAdapter();
+        stub = new StubAdapter();
     }
 
     @Test 
-    void checkSaveThing() {
-        new ThingService(new JdbcTemplate(adapter.getDataSource())).save(new Thing("1"));
+    void checkSaveIvanovThing() {
+        new ThingService(
+            new JdbcTemplate(postgres.getDataSource()),
+            new OwnerGetter("localhost",stub.getPort())).save("ivanov", new Thing("1"));
+    }
+
+    @Test 
+    void checkSavePetrovThing() {
+        assertEquals("Owner not found", Assertions.assertThrows(RuntimeException.class, () -> {
+            new ThingService(
+                new JdbcTemplate(postgres.getDataSource()),
+                new OwnerGetter("localhost",stub.getPort())).save("petrov", new Thing("1"));
+        }).getMessage());
     }
 
     @Test
     void checkFindAll() {
-        new ThingService(new JdbcTemplate(adapter.getDataSource())).findAll();
+        new ThingService(new JdbcTemplate(postgres.getDataSource()), null).findAll();
     }
 }
