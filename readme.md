@@ -1,5 +1,9 @@
 # Demo For Springboot Service with DB
 
+![](diagram.png)
+
+Grafana Dashboard
+
 ![](screenshot.png)
 
 ## To do
