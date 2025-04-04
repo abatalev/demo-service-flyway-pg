@@ -6,6 +6,8 @@ Grafana Dashboard
 
 ![](screenshot.png)
 
+![](traces.png)
+
 ## To do
 
 - observability
@@ -15,8 +17,6 @@ Grafana Dashboard
   - [x] use otlp-collector as bridge
   - [x] use grafana for ui
   - [ ] use alertmanager for alerts :-)
-
-- [ ] k6 add test for post http://dbservice:8080/things
 
 - [ ] versioning
   - use /api/vX/ for all endpoints
