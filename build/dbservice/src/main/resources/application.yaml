@@ -1,7 +1,7 @@
 app:
   owner:
-    host: "${OWNER_HOST}"
-    port: "${OWNER_PORT}"
+    host: ${OWNER_HOST}
+    port: ${OWNER_PORT}
 
 spring:
   main:

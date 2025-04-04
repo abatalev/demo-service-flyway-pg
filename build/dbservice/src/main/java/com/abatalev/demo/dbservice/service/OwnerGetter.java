@@ -2,30 +2,26 @@ package com.abatalev.demo.dbservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestTemplate;
 
 import com.abatalev.demo.dbservice.model.Owner;
 
 @Component
 public class OwnerGetter {
-    private final WebClient client;
+    private final RestTemplate restTemplate;
+    private final String url;
 
     @Autowired
-    public OwnerGetter(@Value("app.owner.host") String host, @Value("app.owner.port") String port) {
-        this.client = WebClient.builder()
-            .baseUrl("http://"+host+":"+port)
-            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE) 
-            .build();
+    public OwnerGetter(@Value("${app.owner.host}") String host, @Value("${app.owner.port}") String port, final RestTemplate restTemplate) {
+        this.url = "http://"+host+":"+port+"/owners/{name}";
+        this.restTemplate = restTemplate;
     }
 
     public Owner get(String nickName) {
         Owner owner;
         try {
-            owner = client.get().uri("/owners/{name}", nickName)
-                .retrieve().bodyToMono(Owner.class).block();
+            owner = restTemplate.getForObject(url, Owner.class, nickName);
         } catch(Throwable exp){
             throw new RuntimeException("Internal Error",exp);
         }

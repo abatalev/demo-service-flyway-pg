@@ -25,7 +25,7 @@ public class ThingService {
 
     public void save(String nickName, Thing thing) {
         Owner owner = getter.get(nickName);
-        jdbcTemplate.update("INSERT INTO a (aa,owner_nick,owner_name) VALUES (?,?,?)", thing.name, owner.nickName, owner.name);
+        jdbcTemplate.update("INSERT INTO a (aa,owner_nick,owner_name) VALUES (?,?,?)", thing.getName(), owner.nickName, owner.name);
     }
 
     @Timed

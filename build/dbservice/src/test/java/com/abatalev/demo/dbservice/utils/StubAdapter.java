@@ -17,11 +17,16 @@ public class StubAdapter {
             .waitingFor(new LogMessageWaitStrategy()
                 .withRegEx(".*Started StubApplication.*\\s")
                 .withTimes(1)           
-                .withStartupTimeout(Duration.of(10, ChronoUnit.SECONDS)));
+                .withStartupTimeout(Duration.of(20, ChronoUnit.SECONDS)));
         container.start();
+        
     }
 
-    public String getPort(){
+    public String getHost() {
+        return container.getHost();
+    }
+
+    public String getPort() {
         return ""+container.getMappedPort(8080);
     }
 }

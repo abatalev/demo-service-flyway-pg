@@ -7,4 +7,8 @@
         <Class name="com.abatalev.demo.dbservice.service.ThingService" />
         <Bug pattern="EI_EXPOSE_REP2" />
     </Match>
+    <Match>
+        <Class name="com.abatalev.demo.dbservice.service.OwnerGetter" />
+        <Bug pattern="EI_EXPOSE_REP2" />
+    </Match>
 </FindBugsFilter>

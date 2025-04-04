@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.client.RestTemplate;
 
 import com.abatalev.demo.dbservice.model.Thing;
 import com.abatalev.demo.dbservice.utils.PostgresAdapter;
@@ -28,23 +29,25 @@ public class ThingServiceTest {
     }
 
     @Test 
-    void checkSaveIvanovThing() {
-        new ThingService(
-            new JdbcTemplate(postgres.getDataSource()),
-            new OwnerGetter("localhost",stub.getPort())).save("ivanov", new Thing("1"));
+    void checkSaveIvanovThing() {   
+        getService().save("ivanov", new Thing("1"));
     }
 
     @Test 
     void checkSavePetrovThing() {
         assertEquals("Owner not found", Assertions.assertThrows(RuntimeException.class, () -> {
-            new ThingService(
-                new JdbcTemplate(postgres.getDataSource()),
-                new OwnerGetter("localhost",stub.getPort())).save("petrov", new Thing("1"));
+            getService().save("petrov", new Thing("1"));
         }).getMessage());
     }
 
     @Test
     void checkFindAll() {
         new ThingService(new JdbcTemplate(postgres.getDataSource()), null).findAll();
+    }
+
+    private ThingService getService() {
+        return new ThingService(
+            new JdbcTemplate(postgres.getDataSource()),
+            new OwnerGetter(stub.getHost(), stub.getPort(), new RestTemplate()));
     }
 }
