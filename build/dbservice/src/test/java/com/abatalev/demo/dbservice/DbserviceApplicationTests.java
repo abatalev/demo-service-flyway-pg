@@ -1,5 +1,6 @@
 package com.abatalev.demo.dbservice;
 
+import io.qameta.allure.Epic;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,7 @@ class DbserviceApplicationTests {
         System.setProperty("OWNER_PORT", "8080");
     }
 
+    @Epic("Web")
     @Test
     void contextLoads() {}
 }

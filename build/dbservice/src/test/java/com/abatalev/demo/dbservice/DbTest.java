@@ -3,6 +3,7 @@ package com.abatalev.demo.dbservice;
 import static org.junit.Assert.assertEquals;
 
 import com.abatalev.demo.dbservice.utils.PostgresAdapter;
+import io.qameta.allure.Epic;
 import org.junit.ClassRule;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,7 @@ public class DbTest {
         adapter = new PostgresAdapter();
     }
 
+    @Epic("Database")
     @Test
     void checkQuery() {
         int result = new JdbcTemplate(adapter.getDataSource()).queryForObject("SELECT COUNT(*) FROM a", Integer.class);

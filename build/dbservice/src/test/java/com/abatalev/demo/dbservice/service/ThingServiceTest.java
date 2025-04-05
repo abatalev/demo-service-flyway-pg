@@ -1,11 +1,14 @@
 package com.abatalev.demo.dbservice.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.abatalev.demo.dbservice.model.Thing;
 import com.abatalev.demo.dbservice.utils.PostgresAdapter;
 import com.abatalev.demo.dbservice.utils.StubAdapter;
-import org.junit.jupiter.api.Assertions;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Epics;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,21 +29,26 @@ public class ThingServiceTest {
         stub = new StubAdapter();
     }
 
+    @Epics({@Epic("Database"), @Epic("Stub")})
+    @Story("Known Owner")
     @Test
     void checkSaveIvanovThing() {
         getService().save("ivanov", new Thing("1"));
     }
 
+    @Epics({@Epic("Database"), @Epic("Stub")})
+    @Story("Unknown Owner")
     @Test
     void checkSavePetrovThing() {
         assertEquals(
                 "Owner not found",
-                Assertions.assertThrows(RuntimeException.class, () -> {
+                assertThrows(RuntimeException.class, () -> {
                             getService().save("petrov", new Thing("1"));
                         })
                         .getMessage());
     }
 
+    @Epic("Database")
     @Test
     void checkFindAll() {
         new ThingService(new JdbcTemplate(postgres.getDataSource()), null).findAll();

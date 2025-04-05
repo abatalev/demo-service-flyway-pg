@@ -5,6 +5,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.abatalev.demo.dbservice.model.Thing;
 import com.abatalev.demo.dbservice.utils.PostgresAdapter;
 import com.abatalev.demo.dbservice.utils.StubAdapter;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Epics;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -41,6 +44,8 @@ public class ThingControlerTest {
         log.info("init - done");
     }
 
+    @Epics({@Epic("Stub"), @Epic("Database"), @Epic("Web")})
+    @Feature("New Thing")
     @Test
     void checkNewThing() {
         assertThat(restTemplate.postForObject(
@@ -48,6 +53,8 @@ public class ThingControlerTest {
                 .contains("{\"name\":\"GummyBear\"}");
     }
 
+    @Epics({@Epic("Database"), @Epic("Web")})
+    @Feature("Get Thing List")
     @Test
     void checkGetThings() throws Exception {
         assertThat(restTemplate.getForObject("http://localhost:" + port + "/things", String.class))

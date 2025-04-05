@@ -18,12 +18,18 @@ Grafana Dashboard
   - [x] use grafana for ui
   - [ ] use alertmanager for alerts :-)
 
+- [x] allure
+  - [x] enable allure maven plugin
+  - [x] use Epics, Feactures, Stories
+
+- [ ] linters
+    - [ ] shellcheck
+    - [ ] hadolint
+ 
 - [ ] versioning
   - use /api/vX/ for all endpoints
 
 - [ ] add pitest
-
-- [ ] add info of build
 
 - [ ] documentation
   - architecture 
