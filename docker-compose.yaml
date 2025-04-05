@@ -1,4 +1,11 @@
 services:
+  builddocs:
+    image: abatalev/builddocs:0.0.1
+    ports:
+      - 8087:80
+    networks:
+      - dbservice 
+
   db:
     image: abatalev/postgres:0.0.1
     environment:

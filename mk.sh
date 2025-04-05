@@ -53,4 +53,30 @@ if ! docker buildx build -f Dockerfile.dbservice -t "abatalev/dbservice:${VERSIO
     exit
 fi
 
+# cd "${CDIR}/build/initdb" || exit
+# mvn clean test jacoco:report org.pitest:pitest-maven:mutationCoverage org.pitest:pitest-maven:report allure:report
+
+# cd "${CDIR}/build/stub" || exit
+# mvn clean test jacoco:report org.pitest:pitest-maven:mutationCoverage org.pitest:pitest-maven:report allure:report
+
+# cd "${CDIR}/build/dbservice" || exit
+# mvn clean test jacoco:report org.pitest:pitest-maven:mutationCoverage org.pitest:pitest-maven:report allure:report
+
+echo "### create docker image for builddocs"
+cd "${CDIR}/build" || exit
+if ! docker buildx build -f Dockerfile.builddocs -t "abatalev/builddocs:${VERSION}" .; then
+    echo "### aborted - abatalev/builddocs"
+    exit
+fi
+
+cd "${CDIR}/build/initdb" || exit
+mvn clean
+
+cd "${CDIR}/build/stub" || exit
+mvn clean
+
+cd "${CDIR}/build/dbservice" || exit
+mvn clean
+
+#docker run --rm -p 8087:80 abatalev/builddocs:0.0.1 
 #docker run --rm -p 8080:8080 abatalev/dbservice:0.0.1
