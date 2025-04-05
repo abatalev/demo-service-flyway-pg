@@ -1,15 +1,12 @@
 package com.abatalev.demo.dbservice.service;
 
+import com.abatalev.demo.dbservice.model.Owner;
+import com.abatalev.demo.dbservice.model.Thing;
+import io.micrometer.core.annotation.Timed;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-
-import com.abatalev.demo.dbservice.model.Owner;
-import com.abatalev.demo.dbservice.model.Thing;
-
-import io.micrometer.core.annotation.Timed;
 
 @Service
 public class ThingService {
@@ -25,11 +22,13 @@ public class ThingService {
 
     public void save(String nickName, Thing thing) {
         Owner owner = getter.get(nickName);
-        jdbcTemplate.update("INSERT INTO a (aa,owner_nick,owner_name) VALUES (?,?,?)", thing.getName(), owner.nickName, owner.name);
+        jdbcTemplate.update(
+                "INSERT INTO a (aa,owner_nick,owner_name) VALUES (?,?,?)", thing.getName(), owner.nickName, owner.name);
     }
 
     @Timed
     public List<Thing> findAll() {
-        return (List<Thing>) jdbcTemplate.query("SELECT aa, owner_nick, owner_name FROM test_schema.a", (rs, rowNum) -> new Thing(rs.getString("AA")) );
+        return (List<Thing>) jdbcTemplate.query(
+                "SELECT aa, owner_nick, owner_name FROM test_schema.a", (rs, rowNum) -> new Thing(rs.getString("AA")));
     }
 }

@@ -12,12 +12,12 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class OwnerControllerTest {
-    
+
     @LocalServerPort
-	private int port;
+    private int port;
 
     @Autowired
-	private TestRestTemplate restTemplate;
+    private TestRestTemplate restTemplate;
 
     @BeforeAll
     static void init() {
@@ -26,14 +26,14 @@ public class OwnerControllerTest {
     }
 
     @Test
-	void checkGetOwnerIvanov() throws Exception {        
-		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/owners/ivanov",String.class))
-            .contains("{\"nickName\":\"ivanov\",\"name\":\"Ivanov\",\"errCode\":0}");
-	}
+    void checkGetOwnerIvanov() throws Exception {
+        assertThat(restTemplate.getForObject("http://localhost:" + port + "/owners/ivanov", String.class))
+                .contains("{\"nickName\":\"ivanov\",\"name\":\"Ivanov\",\"errCode\":0}");
+    }
 
     @Test
-	void checkGetOwnerPetrov() throws Exception {        
-		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/owners/petrov",String.class))
-            .contains("{\"errCode\":2,\"errMessage\":\"Owner not found\"}");
-	}
+    void checkGetOwnerPetrov() throws Exception {
+        assertThat(restTemplate.getForObject("http://localhost:" + port + "/owners/petrov", String.class))
+                .contains("{\"errCode\":2,\"errMessage\":\"Owner not found\"}");
+    }
 }

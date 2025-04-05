@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class Owner {
     private String nickName;
     public String name;
-    public int errCode; 
+    public int errCode;
     public String errMessage;
 
     public Owner(int errCode, String errMessage) {
@@ -20,8 +20,19 @@ public class Owner {
         this.errCode = 0;
     }
 
-    public String getNickName(){ return nickName; }
-    public String getName(){ return name; }
-    public int getErrCode(){ return errCode; }
-    public String getErrMessage(){ return errMessage; }
+    public String getNickName() {
+        return nickName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getErrCode() {
+        return errCode;
+    }
+
+    public String getErrMessage() {
+        return errMessage;
+    }
 }

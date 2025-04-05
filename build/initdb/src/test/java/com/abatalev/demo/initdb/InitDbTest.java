@@ -11,22 +11,21 @@ import org.testcontainers.utility.DockerImageName;
 public class InitDbTest {
 
     @Container
-    private static PostgreSQLContainer container = 
-            new PostgreSQLContainer<>(DockerImageName
-                .parse("abatalev/postgres:0.0.1")
-                .asCompatibleSubstituteFor("postgres"))
+    private static PostgreSQLContainer container = new PostgreSQLContainer<>(
+                    DockerImageName.parse("abatalev/postgres:0.0.1").asCompatibleSubstituteFor("postgres"))
             .withDatabaseName("postgres")
-            .withUsername("postgres")  
+            .withUsername("postgres")
             .withPassword("postgres");
-    
-    @Test 
+
+    @Test
     void migrate() {
-        String url =  "jdbc:postgresql://"+container.getHost()+":"+container.getMappedPort(5432)+"/test_db?loggerLevel=OFF";
+        String url = "jdbc:postgresql://" + container.getHost() + ":" + container.getMappedPort(5432)
+                + "/test_db?loggerLevel=OFF";
         var flyway = Flyway.configure()
-            .locations("filesystem:src/sql")
-            .schemas("test_schema")
-            .dataSource(url, "test_admin", "qwerty")
-            .load();
+                .locations("filesystem:src/sql")
+                .schemas("test_schema")
+                .dataSource(url, "test_admin", "qwerty")
+                .load();
         flyway.info();
         flyway.migrate();
     }

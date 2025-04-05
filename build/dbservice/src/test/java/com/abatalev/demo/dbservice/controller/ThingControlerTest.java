@@ -2,6 +2,9 @@ package com.abatalev.demo.dbservice.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.abatalev.demo.dbservice.model.Thing;
+import com.abatalev.demo.dbservice.utils.PostgresAdapter;
+import com.abatalev.demo.dbservice.utils.StubAdapter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -12,20 +15,16 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-import com.abatalev.demo.dbservice.model.Thing;
-import com.abatalev.demo.dbservice.utils.PostgresAdapter;
-import com.abatalev.demo.dbservice.utils.StubAdapter;
-
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ThingControlerTest {
 
-    static private Logger log = LoggerFactory.getLogger(ThingControlerTest.class);
+    private static Logger log = LoggerFactory.getLogger(ThingControlerTest.class);
 
     @LocalServerPort
-	private int port;
+    private int port;
 
     @Autowired
-	private TestRestTemplate restTemplate;
+    private TestRestTemplate restTemplate;
 
     static PostgresAdapter adapter;
     static StubAdapter stub;
@@ -33,24 +32,25 @@ public class ThingControlerTest {
     @BeforeAll
     static void init() {
         System.setProperty("OTLP_HOST", "example.com");
-		System.setProperty("OTLP_DISABLED", "true");
+        System.setProperty("OTLP_DISABLED", "true");
         log.info("init - started");
         adapter = new PostgresAdapter();
         stub = new StubAdapter();
         System.setProperty("OWNER_HOST", stub.getHost());
-		System.setProperty("OWNER_PORT", stub.getPort());
+        System.setProperty("OWNER_PORT", stub.getPort());
         log.info("init - done");
     }
 
-    @Test 
+    @Test
     void checkNewThing() {
-        assertThat(restTemplate.postForObject("http://localhost:" + port + "/things/ivanov", new Thing("GummyBear"), String.class))
-            .contains("{\"name\":\"GummyBear\"}");
+        assertThat(restTemplate.postForObject(
+                        "http://localhost:" + port + "/things/ivanov", new Thing("GummyBear"), String.class))
+                .contains("{\"name\":\"GummyBear\"}");
     }
 
     @Test
-	void checkGetThings() throws Exception {        
-		assertThat(restTemplate.getForObject("http://localhost:" + port + "/things",String.class))
-            .contains("[]");
-	}
+    void checkGetThings() throws Exception {
+        assertThat(restTemplate.getForObject("http://localhost:" + port + "/things", String.class))
+                .contains("[]");
+    }
 }

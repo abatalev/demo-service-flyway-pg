@@ -1,11 +1,10 @@
 package com.abatalev.demo.dbservice.service;
 
+import com.abatalev.demo.dbservice.model.Owner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import com.abatalev.demo.dbservice.model.Owner;
 
 @Component
 public class OwnerGetter {
@@ -13,8 +12,11 @@ public class OwnerGetter {
     private final String url;
 
     @Autowired
-    public OwnerGetter(@Value("${app.owner.host}") String host, @Value("${app.owner.port}") String port, final RestTemplate restTemplate) {
-        this.url = "http://"+host+":"+port+"/owners/{name}";
+    public OwnerGetter(
+            @Value("${app.owner.host}") String host,
+            @Value("${app.owner.port}") String port,
+            final RestTemplate restTemplate) {
+        this.url = "http://" + host + ":" + port + "/owners/{name}";
         this.restTemplate = restTemplate;
     }
 
@@ -22,11 +24,11 @@ public class OwnerGetter {
         Owner owner;
         try {
             owner = restTemplate.getForObject(url, Owner.class, nickName);
-        } catch(Throwable exp){
-            throw new RuntimeException("Internal Error",exp);
+        } catch (Throwable exp) {
+            throw new RuntimeException("Internal Error", exp);
         }
 
-        if (owner == null){
+        if (owner == null) {
             throw new RuntimeException("Internal Error");
         }
 
