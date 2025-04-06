@@ -1,6 +1,6 @@
-# Demo For Springboot Service with DB
+# Demo Two Services with DB and Flyway
 
-![](diagram.png)
+![](reuse.png)
 
 Grafana Dashboard
 
