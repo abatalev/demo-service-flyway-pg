@@ -19,12 +19,12 @@ export const options = {
   };
 
   export function getOwnerInfo() {
-    http.get('http://service:8080/owners/ivanov');
+    http.get('http://owners-service:8080/owners/ivanov');
     sleep(1)
   }
   
   export function newOwner() {
-    let res = http.post('http://service:8080/owners/', 
+    let res = http.post('http://owners-service:8080/owners/', 
         JSON.stringify({ nickName: "ivanov", name: 'Ivanov' }), {
         headers: { 'Content-Type': 'application/json' },
     });

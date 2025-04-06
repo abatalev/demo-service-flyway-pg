@@ -1,65 +1,52 @@
 services:
-  things-builddocs:
-    image: abatalev/things_builddocs:0.0.1
+  owners-builddocs:
+    image: abatalev/owners_builddocs:0.0.1
     ports:
       - 8087:80
     networks:
-      - things-network
+      - stand-network
 
-  things-db:
-    image: abatalev/things_postgres:0.0.1
+  owners-db:
+    image: abatalev/owners_postgres:0.0.1
     environment:
       POSTGRES_PASSWORD: postgres
     networks:
-      - things-network
+      - stand-network
   
-  things-initdb:
-    image: abatalev/things_initdb:0.0.1
+  owners-initdb:
+    image: abatalev/owners_initdb:0.0.1
     environment:
-      DB_HOST: things-db
-      DB_USER: things_admin
+      DB_HOST: owners-db
+      DB_USER: owners_admin
       DB_PASS: qwerty
-      DB_SCHEMA: things_schema
+      DB_SCHEMA: owners_schema
     depends_on:
-      - things-db
+      - owners-db
     networks:
-      - things-network
-
-  things-stub:
-    image: abatalev/things_stub:0.0.1
+      - stand-network
+     
+  owners-service:
+    image: abatalev/owners_service:0.0.1
     environment:
-      OTLP_HOST: otel 
-      OTLP_DISABLED: false
-    depends_on:
-      - otel
-    networks:
-      - things-network      
-
-  things-service:
-    image: abatalev/things_service:0.0.1
-    environment:
-      DB_HOST: things-db
-      DB_USER: things_user
+      DB_HOST: owners-db
+      DB_USER: owners_user
       DB_PASS: qwerty
       DB_PORT: 5432
       OTLP_DISABLED: false
       OTLP_HOST: otel
-      OWNER_HOST: things-stub
-      OWNER_PORT: 8080
     ports:
       - "8090:8080"  
     depends_on:
-      - things-db
-      - things-stub
+      - owners-db
       - otel
     networks:
-      - things-network
+      - stand-network
 
-  things-k6:
+  owners-k6:
     image: grafana/k6:1.0.0-rc1    
     command: run --tag test-id=123 -o experimental-opentelemetry /scripts/test.js
     volumes:
-      - ./build/generator/test.js:/scripts/test.js:ro
+      - ../owners/build/generator/test.js:/scripts/test.js:ro
     environment:
       K6_NO_USAGE_REPORT: true
       K6_WEB_DASHBOARD: true
@@ -72,10 +59,78 @@ services:
     ports:
       - "8091:5665"       
     depends_on:
+      - owners-service
+      - otel
+    networks:
+      - stand-network
+
+  things-builddocs:
+    image: abatalev/things_builddocs:0.0.1
+    ports:
+      - 8088:80
+    networks:
+      - stand-network 
+
+  things-db:
+    image: abatalev/things_postgres:0.0.1
+    environment:
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - stand-network 
+  
+  things-initdb:
+    image: abatalev/things_initdb:0.0.1
+    environment:
+      DB_HOST: things-db
+      DB_USER: things_admin
+      DB_PASS: qwerty
+      DB_SCHEMA: things_schema
+    depends_on:
+      - things-db
+    networks:
+      - stand-network 
+
+  things-service:
+    image: abatalev/things_service:0.0.1
+    environment:
+      DB_HOST: things-db
+      DB_USER: things_user
+      DB_PASS: qwerty
+      DB_PORT: 5432
+      OTLP_DISABLED: false
+      OTLP_HOST: otel
+      OWNER_HOST: owners-service
+      OWNER_PORT: 8080
+    ports:
+      - "8086:8080"  
+    depends_on:
+      - things-db
+      - owners-service
+      - otel
+    networks:
+      - stand-network
+
+  things-k6:
+    image: grafana/k6:1.0.0-rc1    
+    command: run --tag test-id=123 -o experimental-opentelemetry /scripts/test.js
+    volumes:
+      - ../things/build/generator/test.js:/scripts/test.js:ro
+    environment:
+      K6_NO_USAGE_REPORT: true
+      K6_WEB_DASHBOARD: true
+      K6_WEB_DASHBOARD_PORT: 5665
+      K6_WEB_DASHBOARD_PERIOD: 5s
+      K6_OTEL_GRPC_EXPORTER_INSECURE: true 
+      K6_OTEL_METRIC_PREFIX: k6_
+      K6_OTEL_GRPC_EXPORTER_ENDPOINT: otel:4317
+      K6_OTEL_HTTP_EXPORTER_ENDPOINT: otel:4318
+    ports:
+      - "8082:5665"       
+    depends_on:
       - things-service
       - otel
     networks:
-      - things-network
+      - stand-network
 
   # observability
   otel:
@@ -89,7 +144,7 @@ services:
       - loki
       - tempo
     networks:
-      - things-network
+      - stand-network
 
   prometheus:
     image: prom/prometheus:v3.2.1
@@ -101,7 +156,7 @@ services:
     links:
       - otel
     networks:
-      - things-network
+      - stand-network
 
   loki:
     image: grafana/loki:3.2.0
@@ -111,7 +166,7 @@ services:
     ports:
       - "3100"
     networks:
-      - things-network
+      - stand-network
 
   tempo:
     image: grafana/tempo:2.7.2
@@ -123,7 +178,7 @@ services:
     #   - "4317"  # otlp grpc
     #   - "4318"      
     networks:
-      - things-network
+      - stand-network
 
   grafana:
     environment:
@@ -139,7 +194,7 @@ services:
       - tempo
       - loki
     networks:
-      - things-network
+      - stand-network
 
   # pgadmin:
   #   container_name: pgadmin_container
@@ -154,7 +209,7 @@ services:
   #   ports:
   #     - 8050:80  
   #   networks:
-  #     - things-network
+  #     - stand-network
 
   # alloy:
   #   image: grafana/alloy:v1.7.5
@@ -168,8 +223,8 @@ services:
   #     - loki  
   #     - prometheus
   #   networks:
-  #     - things-network
+  #     - stand-network
 
 networks:
-  things-network:
+  stand-network:
     driver: bridge     

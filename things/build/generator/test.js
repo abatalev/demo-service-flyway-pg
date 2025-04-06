@@ -19,12 +19,12 @@ export const options = {
   };
 
   export function all() {
-    http.get('http://service:8080/things');
+    http.get('http://things-service:8080/things');
     sleep(1)
   }
   
   export function newThing() {
-    let res = http.post('http://service:8080/things/ivanov', 
+    let res = http.post('http://things-service:8080/things/ivanov', 
         JSON.stringify({ name: 'iPhone' }), {
         headers: { 'Content-Type': 'application/json' },
     });

@@ -1,35 +1,34 @@
 services:
-  builddocs:
+  owners-builddocs:
     image: abatalev/owners_builddocs:0.0.1
     ports:
       - 8087:80
     networks:
       - owners-network 
 
-  db:
+  owners-db:
     image: abatalev/owners_postgres:0.0.1
     environment:
       POSTGRES_PASSWORD: postgres
     networks:
       - owners-network 
   
-  initdb:
+  owners-initdb:
     image: abatalev/owners_initdb:0.0.1
     environment:
-      DB_HOST: db
+      DB_HOST: owners-db
       DB_USER: owners_admin
       DB_PASS: qwerty
       DB_SCHEMA: owners_schema
     depends_on:
-      - db
+      - owners-db
     networks:
       - owners-network 
      
-
-  service:
+  owners-service:
     image: abatalev/owners_service:0.0.1
     environment:
-      DB_HOST: db
+      DB_HOST: owners-db
       DB_USER: owners_user
       DB_PASS: qwerty
       DB_PORT: 5432
@@ -38,12 +37,12 @@ services:
     ports:
       - "8090:8080"  
     depends_on:
-      - db
+      - owners-db
       - otel
     networks:
       - owners-network
 
-  k6:
+  owners-k6:
     image: grafana/k6:1.0.0-rc1    
     command: run --tag test-id=123 -o experimental-opentelemetry /scripts/test.js
     volumes:
@@ -60,7 +59,7 @@ services:
     ports:
       - "8091:5665"       
     depends_on:
-      - service
+      - owners-service
       - otel
     networks:
       - owners-network
