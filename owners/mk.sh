@@ -52,7 +52,7 @@ find . -name '*.sh' \
 
 build_component "db" "postgres"
 build_component "initdb" "initdb"
-# build_component "service" "service"
+build_component "service" "service"
 
 # cd "${CDIR}/build/initdb" || exit
 # mvn clean test jacoco:report org.pitest:pitest-maven:mutationCoverage org.pitest:pitest-maven:report allure:report

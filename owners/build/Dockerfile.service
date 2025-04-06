@@ -1,0 +1,4 @@
+FROM bellsoft/liberica-openjre-alpine-musl:17.0.13-12
+COPY service/target/app.jar /opt/app.jar
+COPY app.sh /opt/app.sh
+ENTRYPOINT /opt/app.sh 
