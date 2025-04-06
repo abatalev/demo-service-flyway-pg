@@ -29,6 +29,7 @@ public class ThingService {
     @Timed
     public List<Thing> findAll() {
         return (List<Thing>) jdbcTemplate.query(
-                "SELECT aa, owner_nick, owner_name FROM test_schema.a", (rs, rowNum) -> new Thing(rs.getString("AA")));
+                "SELECT aa, owner_nick, owner_name FROM things_schema.a",
+                (rs, rowNum) -> new Thing(rs.getString("AA")));
     }
 }

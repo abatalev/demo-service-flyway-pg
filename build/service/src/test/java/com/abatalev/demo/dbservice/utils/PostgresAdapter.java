@@ -19,18 +19,18 @@ public class PostgresAdapter {
         container.start();
 
         String url = "jdbc:postgresql://" + container.getHost() + ":" + container.getMappedPort(5432)
-                + "/test_db?loggerLevel=OFF";
+                + "/things_db?loggerLevel=OFF";
         log.info(url);
 
         System.setProperty("DB_HOST", container.getHost());
         System.setProperty("DB_PORT", "" + container.getMappedPort(5432));
-        System.setProperty("DB_USER", "test_user");
+        System.setProperty("DB_USER", "things_user");
         System.setProperty("DB_PASS", "qwerty");
 
         var flyway = Flyway.configure()
                 .locations("filesystem:./target/db/migrations")
-                .schemas("test_schema")
-                .dataSource(url, "test_admin", "qwerty")
+                .schemas("things_schema")
+                .dataSource(url, "things_admin", "qwerty")
                 .load();
         flyway.info();
         flyway.migrate();
@@ -38,9 +38,9 @@ public class PostgresAdapter {
         dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl(url);
-        dataSource.setUsername("test_admin");
+        dataSource.setUsername("things_admin");
         dataSource.setPassword("qwerty");
-        dataSource.setSchema("test_schema");
+        dataSource.setSchema("things_schema");
     }
 
     public DriverManagerDataSource getDataSource() {

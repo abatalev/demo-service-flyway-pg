@@ -1,29 +1,29 @@
-CREATE USER test_admin PASSWORD 'qwerty';
-CREATE USER test_user PASSWORD 'qwerty';
-CREATE USER test_read PASSWORD 'qwerty';
+CREATE USER things_admin PASSWORD 'qwerty';
+CREATE USER things_user PASSWORD 'qwerty';
+CREATE USER things_read PASSWORD 'qwerty';
 
-CREATE DATABASE test_db; 
+CREATE DATABASE things_db; 
 
-GRANT CONNECT ON DATABASE test_db TO test_admin;
-GRANT CONNECT ON DATABASE test_db TO test_user;
-GRANT CONNECT ON DATABASE test_db TO test_read;
+GRANT CONNECT ON DATABASE things_db TO things_admin;
+GRANT CONNECT ON DATABASE things_db TO things_user;
+GRANT CONNECT ON DATABASE things_db TO things_read;
 
-\c test_db;
+\c things_db;
 
-CREATE SCHEMA test_schema;
+CREATE SCHEMA things_schema;
 
-GRANT CREATE ON SCHEMA test_schema TO test_admin;
-GRANT USAGE ON SCHEMA test_schema TO test_admin;
-GRANT USAGE ON SCHEMA test_schema TO test_user;
-GRANT USAGE ON SCHEMA test_schema TO test_read;
-
-ALTER DEFAULT PRIVILEGES
-  FOR USER test_admin
-  IN SCHEMA test_schema
-  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO test_user;
+GRANT CREATE ON SCHEMA things_schema TO things_admin;
+GRANT USAGE ON SCHEMA things_schema TO things_admin;
+GRANT USAGE ON SCHEMA things_schema TO things_user;
+GRANT USAGE ON SCHEMA things_schema TO things_read;
 
 ALTER DEFAULT PRIVILEGES
-  FOR USER test_admin
-  IN SCHEMA test_schema
-  GRANT SELECT ON TABLES TO test_read;
+  FOR USER things_admin
+  IN SCHEMA things_schema
+  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO things_user;
+
+ALTER DEFAULT PRIVILEGES
+  FOR USER things_admin
+  IN SCHEMA things_schema
+  GRANT SELECT ON TABLES TO things_read;
 

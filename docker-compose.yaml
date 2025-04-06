@@ -17,9 +17,9 @@ services:
     image: abatalev/things_initdb:0.0.1
     environment:
       DB_HOST: db
-      DB_USER: test_admin
+      DB_USER: things_admin
       DB_PASS: qwerty
-      DB_SCHEMA: test_schema
+      DB_SCHEMA: things_schema
     depends_on:
       - db
     networks:
@@ -39,7 +39,7 @@ services:
     image: abatalev/things_service:0.0.1
     environment:
       DB_HOST: db
-      DB_USER: test_user
+      DB_USER: things_user
       DB_PASS: qwerty
       DB_PORT: 5432
       OTLP_DISABLED: false

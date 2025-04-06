@@ -20,11 +20,11 @@ public class InitDbTest {
     @Test
     void migrate() {
         String url = "jdbc:postgresql://" + container.getHost() + ":" + container.getMappedPort(5432)
-                + "/test_db?loggerLevel=OFF";
+                + "/things_db?loggerLevel=OFF";
         var flyway = Flyway.configure()
                 .locations("filesystem:src/sql")
-                .schemas("test_schema")
-                .dataSource(url, "test_admin", "qwerty")
+                .schemas("things_schema")
+                .dataSource(url, "things_admin", "qwerty")
                 .load();
         flyway.info();
         flyway.migrate();
