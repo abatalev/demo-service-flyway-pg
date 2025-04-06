@@ -2,56 +2,53 @@
 VERSION="0.0.1"
 CDIR=$(pwd)
 
-echo "Demo DbService with Flyway"
+build_docker_image() {
+    LABEL=$1
+    NAME=$2
 
-echo "### create docker image for db"
-cd "${CDIR}/build" || exit
-if ! docker buildx build -f Dockerfile.postgres -t "abatalev/postgres:${VERSION}" .; then
-    echo "### aborted - db"
-    exit
-fi
+    echo "### create docker image for ${LABEL}"
+    cd "${CDIR}/build" || exit
+    docker run --rm -i hadolint/hadolint:2.12.1-beta-alpine < "Dockerfile.${NAME}"
+    if ! docker buildx build -f "Dockerfile.${NAME}" -t "abatalev/${NAME}:${VERSION}" .; then
+        echo "### aborted - ${LABEL}"
+        exit
+    fi
+}
 
-echo "### build jar for initdb"
-cd "${CDIR}/build/initdb" || exit
-if ! mvn clean install; then
-    echo "### aborted - initdb"
-    exit
-fi
+build_maven() {
+    LABEL=$1
+    NAME=$2
 
-echo "### create docker image for initdb"
-cd "${CDIR}/build" || exit
-if ! docker buildx build -f Dockerfile.initdb -t "abatalev/initdb:${VERSION}" .; then
-    echo "### aborted - abatalev/initdb"
-    exit
-fi
+    echo "### build jar for ${LABEL}"
+    cd "${CDIR}/build/${NAME}" || exit
+    if ! mvn clean install; then
+        echo "### aborted - ${LABEL}"
+        exit
+    fi
+}
 
-echo "### build jar for stub"
-cd "${CDIR}/build/stub" || exit
-if ! mvn clean install; then
-    echo "### aborted - stub"
-    exit
-fi
+clean_maven() {
+    NAME=$1
 
-echo "### create docker image for stub"
-cd "${CDIR}/build" || exit
-if ! docker buildx build -f Dockerfile.stub -t "abatalev/stub:${VERSION}" .; then
-    echo "### aborted - abatalev/stub"
-    exit
-fi
+    cd "${CDIR}/build/${NAME}" || exit
+    mvn clean
+}
 
-echo "### build jar for dbservice"
-cd "${CDIR}/build/dbservice" || exit
-if ! mvn clean install; then
-    echo "### aborted - dbservice"
-    exit
-fi
+echo "Demo Service with Stub, Postgres and Flyway"
 
-echo "### create docker image for dbservice"
-cd "${CDIR}/build" || exit
-if ! docker buildx build -f Dockerfile.dbservice -t "abatalev/dbservice:${VERSION}" .; then
-    echo "### aborted - abatalev/dbservice"
-    exit
-fi
+find . -name '*.sh' \
+  -exec docker run --rm -it -v "${CDIR}:/mnt" koalaman/shellcheck:v0.10.0 {} \;
+
+build_docker_image "db" "postgres"
+
+build_maven "initdb" "initdb"
+build_docker_image "initdb" "initdb"
+
+build_maven "stub" "stub"
+build_docker_image "stub" "stub"
+
+build_maven "dbservice" "dbservice"
+build_docker_image "dbservice" "dbservice"
 
 # cd "${CDIR}/build/initdb" || exit
 # mvn clean test jacoco:report org.pitest:pitest-maven:mutationCoverage org.pitest:pitest-maven:report allure:report
@@ -62,21 +59,11 @@ fi
 # cd "${CDIR}/build/dbservice" || exit
 # mvn clean test jacoco:report org.pitest:pitest-maven:mutationCoverage org.pitest:pitest-maven:report allure:report
 
-echo "### create docker image for builddocs"
-cd "${CDIR}/build" || exit
-if ! docker buildx build -f Dockerfile.builddocs -t "abatalev/builddocs:${VERSION}" .; then
-    echo "### aborted - abatalev/builddocs"
-    exit
-fi
+build_docker_image "builddocs" "builddocs"
 
-cd "${CDIR}/build/initdb" || exit
-mvn clean
-
-cd "${CDIR}/build/stub" || exit
-mvn clean
-
-cd "${CDIR}/build/dbservice" || exit
-mvn clean
+clean_maven "initdb"
+clean_maven "stub"
+clean_maven "dbservice"
 
 #docker run --rm -p 8087:80 abatalev/builddocs:0.0.1 
 #docker run --rm -p 8080:8080 abatalev/dbservice:0.0.1
