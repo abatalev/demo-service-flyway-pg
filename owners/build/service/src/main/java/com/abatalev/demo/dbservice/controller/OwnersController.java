@@ -25,7 +25,6 @@ public class OwnersController {
 
     @PostMapping("/owners/")
     Owner newOwner(@RequestBody Owner owner) {
-        service.save(owner);
-        return owner;
+        return service.save(owner);
     }
 }

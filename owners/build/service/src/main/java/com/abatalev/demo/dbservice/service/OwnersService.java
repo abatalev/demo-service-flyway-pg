@@ -28,10 +28,20 @@ public class OwnersService {
         }
     }
 
-    public void save(Owner owner) {
-        jdbcTemplate.update(
-                "INSERT INTO owners_schema.owners_info (owner_nickname,owner_name) VALUES (?,?)",
-                owner.getNickName(),
-                owner.getName());
+    public Owner save(Owner owner) {
+        try {
+            jdbcTemplate.queryForObject(
+                    "SELECT owner_nickname, owner_name" + " FROM owners_schema.owners_info"
+                            + " WHERE owner_nickname = ?",
+                    (rs, rowNum) -> new Owner(rs.getString("OWNER_NICKNAME"), rs.getString("OWNER_NAME")),
+                    owner.getNickName());
+            return new Owner(1, "Owner already exists");
+        } catch (DataAccessException dae) {
+            jdbcTemplate.update(
+                    "INSERT INTO owners_schema.owners_info (owner_nickname,owner_name) VALUES (?,?)",
+                    owner.getNickName(),
+                    owner.getName());
+            return owner;
+        }
     }
 }
