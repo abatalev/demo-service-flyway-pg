@@ -4,14 +4,14 @@ services:
     ports:
       - 8087:80
     networks:
-      - dbservice 
+      - service-network 
 
   db:
     image: abatalev/postgres:0.0.1
     environment:
       POSTGRES_PASSWORD: postgres
     networks:
-      - dbservice 
+      - service-network 
   
   initdb:
     image: abatalev/initdb:0.0.1
@@ -23,7 +23,7 @@ services:
     depends_on:
       - db
     networks:
-      - dbservice 
+      - service-network 
 
   stub:
     image: abatalev/stub:0.0.1
@@ -33,10 +33,10 @@ services:
     depends_on:
       - otel
     networks:
-      - dbservice       
+      - service-network       
 
-  dbservice:
-    image: abatalev/dbservice:0.0.1
+  service:
+    image: abatalev/service:0.0.1
     environment:
       DB_HOST: db
       DB_USER: test_user
@@ -53,7 +53,7 @@ services:
       - stub
       - otel
     networks:
-      - dbservice
+      - service-network
 
   k6:
     image: grafana/k6:1.0.0-rc1    
@@ -72,10 +72,10 @@ services:
     ports:
       - "8091:5665"       
     depends_on:
-      - dbservice
+      - service
       - otel
     networks:
-      - dbservice
+      - service-network
 
   # observability
   otel:
@@ -89,7 +89,7 @@ services:
       - loki
       - tempo
     networks:
-      - dbservice
+      - service-network
 
   prometheus:
     image: prom/prometheus:v3.2.1
@@ -101,7 +101,7 @@ services:
     links:
       - otel
     networks:
-      - dbservice
+      - service-network
 
   loki:
     image: grafana/loki:3.2.0
@@ -111,7 +111,7 @@ services:
     ports:
       - "3100"
     networks:
-      - dbservice
+      - service-network
 
   tempo:
     image: grafana/tempo:2.7.2
@@ -123,7 +123,7 @@ services:
     #   - "4317"  # otlp grpc
     #   - "4318"      
     networks:
-      - dbservice
+      - service-network
 
   grafana:
     environment:
@@ -139,7 +139,7 @@ services:
       - tempo
       - loki
     networks:
-      - dbservice
+      - service-network
 
   # pgadmin:
   #   container_name: pgadmin_container
@@ -154,7 +154,7 @@ services:
   #   ports:
   #     - 8050:80  
   #   networks:
-  #     - dbservice
+  #     - service-network
 
   # alloy:
   #   image: grafana/alloy:v1.7.5
@@ -168,8 +168,8 @@ services:
   #     - loki  
   #     - prometheus
   #   networks:
-  #     - dbservice
+  #     - service-network
 
 networks:
-  dbservice:
+  service-network:
     driver: bridge     

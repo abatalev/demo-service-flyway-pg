@@ -52,7 +52,7 @@ find . -name '*.sh' \
 build_component "db" "postgres"
 build_component "initdb" "initdb"
 build_component "stub" "stub"
-build_component "dbservice" "dbservice"
+build_component "service" "service"
 
 # cd "${CDIR}/build/initdb" || exit
 # mvn clean test jacoco:report org.pitest:pitest-maven:mutationCoverage org.pitest:pitest-maven:report allure:report
@@ -67,7 +67,7 @@ build_component "builddocs" "builddocs"
 
 clean_maven "initdb"
 clean_maven "stub"
-clean_maven "dbservice"
+clean_maven "service"
 
 #docker run --rm -p 8087:80 abatalev/builddocs:0.0.1 
 #docker run --rm -p 8080:8080 abatalev/dbservice:0.0.1

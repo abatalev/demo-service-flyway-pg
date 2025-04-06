@@ -1,8 +1,8 @@
 FROM nginx:1.27.4-alpine3.21-otel 
 COPY builddocs/index.html /usr/share/nginx/html/
-COPY dbservice/target/site/jacoco-report/ /usr/share/nginx/html/dbservice/jacoco-report/
-COPY dbservice/target/site/allure-report/ /usr/share/nginx/html/dbservice/allure-report/
-# COPY dbservice/target/site/pit-report/ /usr/share/nginx/html/dbservice/pit-report/
+COPY service/target/site/jacoco-report/ /usr/share/nginx/html/service/jacoco-report/
+COPY service/target/site/allure-report/ /usr/share/nginx/html/service/allure-report/
+# COPY dbservice/target/site/pit-report/ /usr/share/nginx/html/service/pit-report/
 COPY stub/target/site/jacoco-report/ /usr/share/nginx/html/stub/jacoco-report/
 COPY stub/target/site/allure-report/ /usr/share/nginx/html/stub/allure-report/
 # COPY stub/target/site/pit-report/ /usr/share/nginx/html/stub/pit-report/
