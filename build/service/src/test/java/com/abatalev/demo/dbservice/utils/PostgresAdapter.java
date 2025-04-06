@@ -14,7 +14,7 @@ public class PostgresAdapter {
 
     public PostgresAdapter() {
         PostgreSQLContainer container = new PostgreSQLContainer<>(
-                        DockerImageName.parse("abatalev/postgres:0.0.1").asCompatibleSubstituteFor("postgres"))
+                        DockerImageName.parse("abatalev/things_postgres:0.0.1").asCompatibleSubstituteFor("postgres"))
                 .withPassword("postgres");
         container.start();
 

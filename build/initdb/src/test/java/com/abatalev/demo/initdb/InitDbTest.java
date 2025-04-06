@@ -12,7 +12,7 @@ public class InitDbTest {
 
     @Container
     private static PostgreSQLContainer container = new PostgreSQLContainer<>(
-                    DockerImageName.parse("abatalev/postgres:0.0.1").asCompatibleSubstituteFor("postgres"))
+                    DockerImageName.parse("abatalev/things_postgres:0.0.1").asCompatibleSubstituteFor("postgres"))
             .withDatabaseName("postgres")
             .withUsername("postgres")
             .withPassword("postgres");

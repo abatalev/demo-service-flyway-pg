@@ -1,5 +1,6 @@
 #!/bin/sh
 VERSION="0.0.1"
+GROUPNAME="things"
 CDIR=$(pwd)
 
 build_docker_image() {
@@ -9,7 +10,7 @@ build_docker_image() {
     echo "### create docker image for ${LABEL}"
     cd "${CDIR}/build" || exit
     docker run --rm -i hadolint/hadolint:2.12.1-beta-alpine < "Dockerfile.${NAME}"
-    if ! docker buildx build -f "Dockerfile.${NAME}" -t "abatalev/${NAME}:${VERSION}" .; then
+    if ! docker buildx build -f "Dockerfile.${NAME}" -t "abatalev/${GROUPNAME}_${NAME}:${VERSION}" .; then
         echo "### aborted - ${LABEL}"
         exit
     fi
@@ -70,4 +71,4 @@ clean_maven "stub"
 clean_maven "service"
 
 #docker run --rm -p 8087:80 abatalev/builddocs:0.0.1 
-#docker run --rm -p 8080:8080 abatalev/dbservice:0.0.1
+#docker run --rm -p 8080:8080 abatalev/service:0.0.1

@@ -9,7 +9,7 @@ public class StubAdapter {
     private GenericContainer container;
 
     public StubAdapter() {
-        container = new GenericContainer("abatalev/stub:0.0.1")
+        container = new GenericContainer("abatalev/things_stub:0.0.1")
                 .withExposedPorts(8080)
                 .withEnv("OTLP_HOST", "otlp.example.com")
                 .withEnv("OTLP_DISABLED", "true")
