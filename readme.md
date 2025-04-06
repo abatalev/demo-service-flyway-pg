@@ -18,10 +18,6 @@ Grafana Dashboard
   - [x] use grafana for ui
   - [ ] use alertmanager for alerts :-)
 
-- [x] allure
-  - [x] enable allure maven plugin
-  - [x] use Epics, Feactures, Stories
-
 - [ ] linters
     - [ ] shellcheck
     - [ ] hadolint
@@ -32,13 +28,17 @@ Grafana Dashboard
 - [ ] add pitest
 
 - [ ] documentation
-  - architecture 
+  - architecture
+
+- [ ] create second service (owners)   
 
 ## Build
 
 ```sh
+cd things
 ./mk.sh
 docker compose up
+xdg-open http://localhost:8087
 ```
 
 ## Pages
