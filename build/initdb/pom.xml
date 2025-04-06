@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.abatalev.demo</groupId>
-	<artifactId>initdb</artifactId>
+	<artifactId>things-initdb</artifactId>
 	<version>0.0.1</version>
-	<name>initdb</name>
+	<name>things-initdb</name>
 	<description>Demo project for Spring Boot</description>
 	<url />
 	<licenses>

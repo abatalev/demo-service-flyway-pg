@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.abatalev.demo</groupId>
-	<artifactId>dbservice</artifactId>
+	<artifactId>things-service</artifactId>
 	<version>0.0.1</version>
-	<name>dbservice</name>
+	<name>things-service</name>
 	<description>Demo project for Spring Boot</description>
 	<url />
 	<licenses>
@@ -325,7 +325,7 @@
 							<artifactItems>
 								<artifactItem>
 									<groupId>com.abatalev.demo</groupId>
-									<artifactId>initdb</artifactId>
+									<artifactId>things-initdb</artifactId>
 									<version>0.0.1</version>
 									<classifier>sql</classifier>
 									<type>jar</type>
