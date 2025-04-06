@@ -27,6 +27,16 @@ build_maven() {
     fi
 }
 
+build_component() {
+    LABEL=$1
+    NAME=$2
+
+    if [ -f "${CDIR}/build/${NAME}/pom.xml" ]; then
+        build_maven "${LABEL}" "${NAME}"
+    fi
+    build_docker_image "${LABEL}" "${NAME}"
+}
+
 clean_maven() {
     NAME=$1
 
@@ -39,16 +49,10 @@ echo "Demo Service with Stub, Postgres and Flyway"
 find . -name '*.sh' \
   -exec docker run --rm -it -v "${CDIR}:/mnt" koalaman/shellcheck:v0.10.0 {} \;
 
-build_docker_image "db" "postgres"
-
-build_maven "initdb" "initdb"
-build_docker_image "initdb" "initdb"
-
-build_maven "stub" "stub"
-build_docker_image "stub" "stub"
-
-build_maven "dbservice" "dbservice"
-build_docker_image "dbservice" "dbservice"
+build_component "db" "postgres"
+build_component "initdb" "initdb"
+build_component "stub" "stub"
+build_component "dbservice" "dbservice"
 
 # cd "${CDIR}/build/initdb" || exit
 # mvn clean test jacoco:report org.pitest:pitest-maven:mutationCoverage org.pitest:pitest-maven:report allure:report
@@ -59,7 +63,7 @@ build_docker_image "dbservice" "dbservice"
 # cd "${CDIR}/build/dbservice" || exit
 # mvn clean test jacoco:report org.pitest:pitest-maven:mutationCoverage org.pitest:pitest-maven:report allure:report
 
-build_docker_image "builddocs" "builddocs"
+build_component "builddocs" "builddocs"
 
 clean_maven "initdb"
 clean_maven "stub"
