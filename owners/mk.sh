@@ -51,7 +51,7 @@ find . -name '*.sh' \
   -exec docker run --rm -it -v "${CDIR}:/mnt" koalaman/shellcheck:v0.10.0 {} \;
 
 build_component "db" "postgres"
-# build_component "initdb" "initdb"
+build_component "initdb" "initdb"
 # build_component "service" "service"
 
 # cd "${CDIR}/build/initdb" || exit
