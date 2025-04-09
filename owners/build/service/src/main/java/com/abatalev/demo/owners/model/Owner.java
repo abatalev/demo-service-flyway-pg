@@ -1,4 +1,4 @@
-package com.abatalev.demo.dbservice.model;
+package com.abatalev.demo.owners.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;

@@ -1,7 +1,7 @@
-package com.abatalev.demo.dbservice.controller;
+package com.abatalev.demo.owners.controller;
 
-import com.abatalev.demo.dbservice.model.Owner;
-import com.abatalev.demo.dbservice.service.OwnersService;
+import com.abatalev.demo.owners.model.Owner;
+import com.abatalev.demo.owners.service.OwnersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

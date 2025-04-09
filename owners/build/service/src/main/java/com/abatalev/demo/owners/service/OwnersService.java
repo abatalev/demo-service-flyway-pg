@@ -1,6 +1,6 @@
-package com.abatalev.demo.dbservice.service;
+package com.abatalev.demo.owners.service;
 
-import com.abatalev.demo.dbservice.model.Owner;
+import com.abatalev.demo.owners.model.Owner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -1,8 +1,8 @@
-package com.abatalev.demo.dbservice;
+package com.abatalev.demo.owners;
 
 import static org.junit.Assert.assertEquals;
 
-import com.abatalev.demo.dbservice.utils.PostgresAdapter;
+import com.abatalev.demo.owners.utils.PostgresAdapter;
 import io.qameta.allure.Epic;
 import org.junit.ClassRule;
 import org.junit.jupiter.api.BeforeAll;

@@ -1,4 +1,4 @@
-package com.abatalev.demo.dbservice;
+package com.abatalev.demo.owners;
 
 import io.qameta.allure.Epic;
 import org.junit.jupiter.api.BeforeAll;

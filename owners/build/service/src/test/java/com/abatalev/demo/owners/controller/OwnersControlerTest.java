@@ -1,9 +1,9 @@
-package com.abatalev.demo.dbservice.controller;
+package com.abatalev.demo.owners.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.abatalev.demo.dbservice.model.Owner;
-import com.abatalev.demo.dbservice.utils.PostgresAdapter;
+import com.abatalev.demo.owners.model.Owner;
+import com.abatalev.demo.owners.utils.PostgresAdapter;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Epics;
 import io.qameta.allure.Feature;

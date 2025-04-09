@@ -1,10 +1,10 @@
-package com.abatalev.demo.dbservice.service;
+package com.abatalev.demo.owners.service;
 
 import static io.qameta.allure.Allure.step;
 import static org.junit.Assert.assertEquals;
 
-import com.abatalev.demo.dbservice.model.Owner;
-import com.abatalev.demo.dbservice.utils.PostgresAdapter;
+import com.abatalev.demo.owners.model.Owner;
+import com.abatalev.demo.owners.utils.PostgresAdapter;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Epics;
 import io.qameta.allure.Story;
