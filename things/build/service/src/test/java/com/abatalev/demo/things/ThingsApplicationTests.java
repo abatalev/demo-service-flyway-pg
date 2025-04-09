@@ -1,4 +1,4 @@
-package com.abatalev.demo.dbservice;
+package com.abatalev.demo.things;
 
 import io.qameta.allure.Epic;
 import org.junit.jupiter.api.BeforeAll;
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DbserviceApplicationTests {
+class ThingsApplicationTests {
 
     @BeforeAll
     static void init() {

@@ -1,4 +1,4 @@
-package com.abatalev.demo.dbservice.model;
+package com.abatalev.demo.things.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 

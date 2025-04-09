@@ -4,11 +4,11 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="https://github.com/spotbugs/filter/4.8.4 https://raw.githubusercontent.com/spotbugs/spotbugs/4.8.4/spotbugs/etc/findbugsfilter.xsd">
     <Match>
-        <Class name="com.abatalev.demo.dbservice.service.ThingService" />
+        <Class name="com.abatalev.demo.things.service.ThingService" />
         <Bug pattern="EI_EXPOSE_REP2" />
     </Match>
     <Match>
-        <Class name="com.abatalev.demo.dbservice.service.OwnerGetter" />
+        <Class name="com.abatalev.demo.things.service.OwnerGetter" />
         <Bug pattern="EI_EXPOSE_REP2" />
     </Match>
 </FindBugsFilter>

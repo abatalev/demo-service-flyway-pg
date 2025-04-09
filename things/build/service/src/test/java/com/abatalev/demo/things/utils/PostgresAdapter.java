@@ -1,4 +1,4 @@
-package com.abatalev.demo.dbservice.utils;
+package com.abatalev.demo.things.utils;
 
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;

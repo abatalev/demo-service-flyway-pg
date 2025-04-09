@@ -1,4 +1,4 @@
-package com.abatalev.demo.dbservice.model;
+package com.abatalev.demo.things.model;
 
 public class Owner {
     public String nickName;

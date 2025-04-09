@@ -1,33 +1,31 @@
+---
 app:
   owner:
-    host: ${OWNER_HOST}
-    port: ${OWNER_PORT}
-
+    host: "${OWNER_HOST}"
+    port: "${OWNER_PORT}"
 spring:
   main:
     banner-mode: "off"
   application:
-    name: dbservice
+    name: things-service
   flyway:
     enabled: false
   datasource:
     driver: org.postgresql.Driver
-    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/things_db?currentSchema=things_schema
-    username: ${DB_USER}
-    password: ${DB_PASS}
+    url: "jdbc:postgresql://${DB_HOST}:${DB_PORT}/things_db?currentSchema=things_schema"
+    username: "${DB_USER}"
+    password: "${DB_PASS}"
     hikari:
       connectionTimeout: 20000
       maximumPoolSize: 5
-
 logging:
   level:
     root: INFO
-
 management:
   endpoints:
     web:
       exposure:
-        include: health,prometheus
+        include: "health,prometheus"
     health:
       show-details: always
   metrics:
@@ -36,40 +34,36 @@ management:
         enabled: true
   otlp:
     tracing:
-      endpoint: http://${OTLP_HOST}:4318/v1/traces
+      endpoint: "http://${OTLP_HOST}:4318/v1/traces"
       timeout: 10s
     metrics:
       export:
-        url: http://${OTLP_HOST}:4318/v1/metrics
+        url: "http://${OTLP_HOST}:4318/v1/metrics"
         step: 5s
-
   tracing:
     enabled: true
     sampling:
       probability: 1
-
   opentelemetry:
     resource-attributes:
-      "service-name": ${spring.application.name}
-
+      service-name: "${spring.application.name}"
 otel:
-  sdk.disabled: ${OTLP_DISABLED}
+  sdk.disabled: "${OTLP_DISABLED}"
   traces.exporter: otlp
   logs.exporter: otlp
   metrics.exporter: otlp
-  metric.export.interval: 5000 #Export metrics each five seconds
+  metric.export.interval: 5000
   instrumentation:
-    micrometer.enabled: true #Enabe Micrometer metrics bridge
+    micrometer.enabled: true
     jdbc.enabled: true
     logback-mdc.enabled: true
   exporter:
     otlp:
-      endpoint: http://${OTLP_HOST}:4318
-
+      endpoint: "http://${OTLP_HOST}:4318"
   propagators:
-    - tracecontext
+  - tracecontext
   resource:
     attributes:
       service:
-        name: ${spring.application.name}
+        name: "${spring.application.name}"
         namespace: x4

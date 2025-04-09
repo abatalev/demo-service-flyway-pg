@@ -1,7 +1,7 @@
-package com.abatalev.demo.dbservice.service;
+package com.abatalev.demo.things.service;
 
-import com.abatalev.demo.dbservice.model.Owner;
-import com.abatalev.demo.dbservice.model.Thing;
+import com.abatalev.demo.things.model.Owner;
+import com.abatalev.demo.things.model.Thing;
 import io.micrometer.core.annotation.Timed;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;

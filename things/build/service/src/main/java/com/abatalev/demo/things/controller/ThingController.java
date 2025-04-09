@@ -1,7 +1,7 @@
-package com.abatalev.demo.dbservice.controller;
+package com.abatalev.demo.things.controller;
 
-import com.abatalev.demo.dbservice.model.Thing;
-import com.abatalev.demo.dbservice.service.ThingService;
+import com.abatalev.demo.things.model.Thing;
+import com.abatalev.demo.things.service.ThingService;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

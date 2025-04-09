@@ -1,10 +1,10 @@
-package com.abatalev.demo.dbservice.controller;
+package com.abatalev.demo.things.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.abatalev.demo.dbservice.model.Thing;
-import com.abatalev.demo.dbservice.utils.PostgresAdapter;
-import com.abatalev.demo.dbservice.utils.StubAdapter;
+import com.abatalev.demo.things.model.Thing;
+import com.abatalev.demo.things.utils.PostgresAdapter;
+import com.abatalev.demo.things.utils.StubAdapter;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Epics;
 import io.qameta.allure.Feature;

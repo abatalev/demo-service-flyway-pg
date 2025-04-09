@@ -1,4 +1,4 @@
-package com.abatalev.demo.dbservice;
+package com.abatalev.demo.things;
 
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.instrumentation.spring.web.v3_1.SpringWebTelemetry;
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-public class DbserviceApplication {
+public class ThingsApplication {
 
     @Bean
     public RestTemplate restTemplate(OpenTelemetry openTelemetry) {
@@ -19,6 +19,6 @@ public class DbserviceApplication {
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(DbserviceApplication.class);
+        SpringApplication.run(ThingsApplication.class);
     }
 }

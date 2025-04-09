@@ -1,4 +1,4 @@
-package com.abatalev.demo.dbservice.utils;
+package com.abatalev.demo.things.utils;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;

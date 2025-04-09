@@ -1,11 +1,11 @@
-package com.abatalev.demo.dbservice.service;
+package com.abatalev.demo.things.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.abatalev.demo.dbservice.model.Thing;
-import com.abatalev.demo.dbservice.utils.PostgresAdapter;
-import com.abatalev.demo.dbservice.utils.StubAdapter;
+import com.abatalev.demo.things.model.Thing;
+import com.abatalev.demo.things.utils.PostgresAdapter;
+import com.abatalev.demo.things.utils.StubAdapter;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Epics;
 import io.qameta.allure.Story;

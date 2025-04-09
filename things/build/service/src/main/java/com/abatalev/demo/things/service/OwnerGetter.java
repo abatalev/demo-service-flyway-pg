@@ -1,6 +1,6 @@
-package com.abatalev.demo.dbservice.service;
+package com.abatalev.demo.things.service;
 
-import com.abatalev.demo.dbservice.model.Owner;
+import com.abatalev.demo.things.model.Owner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
