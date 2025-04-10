@@ -1,46 +1,142 @@
-<hml>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: 'Roboto', sans-serif;
+        background: #f9f9f9;
+        color: #333;
+        line-height: 1.6;
+        padding: 1rem;
+      }
+      .container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 1.5rem 2rem;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        margin-bottom: 1rem;
+        font-size: 2rem;
+        color: #444;
+      }
+      .section {
+        margin-bottom: 2rem;
+      }
+      .section-title {
+        margin-bottom: 0.8rem;
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: #555;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 0.3rem;
+      }
+      ul {
+        list-style: none;
+        padding-left: 0;
+      }
+      li {
+        margin-bottom: 0.6rem;
+      }
+      a {
+        text-decoration: none;
+        color: #007bff;
+        transition: color 0.3s ease;
+      }
+      a:hover {
+        color: #0056b3;
+      }
+      .sub-list {
+        padding-left: 1.2rem;
+        margin-top: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Things dashboard</h1>
 
-    <body>
-        <p>Links:</p>
+      <section class="section">
+        <div class="section-title">Links</div>
         <ul>
-            <li><a href="http://localhost:8091">K6</a></li>
-            <li><a href="http://localhost:55679/debug/tracez">Otel-Collector</a></li>
-            <li><a href="http://localhost:9090">Prometheus</a></li>
-            <li><a href="http://localhost:3001">Grafana</a></li>
-            <!-- <li><a href="http://localhost:8050">PgAdmin</a></li> -->
-
-            <li>Service:
-                <ul>
-                    <li><a href="http://localhost:8090/actuator/prometheus">Metrics</a></li>
-                    <li><a href="http://localhost:8090/actuator">Actuator</a></li>
-                    <li><a href="http://localhost:8090/things">Get Things</a></li>
-                </ul>
-            </li>
+          <li><a href="http://localhost:8091">K6</a></li>
+          <li>
+            <a href="http://localhost:55679/debug/tracez">Otel-Collector</a>
+          </li>
+          <li><a href="http://localhost:9090">Prometheus</a></li>
+          <li><a href="http://localhost:3001">Grafana</a></li>
+          <li><a href="http://localhost:3002">DbGate</a></li>
+          <li>
+            Service:
+            <ul class="sub-list">
+              <li>
+                <a href="http://localhost:8090/actuator/prometheus">Metrics</a>
+              </li>
+              <li>
+                <a href="http://localhost:8090/actuator">Actuator</a>
+              </li>
+              <li>
+                <a href="http://localhost:8090/things">Get Things</a>
+              </li>
+            </ul>
+          </li>
         </ul>
-
-        <p>Reports:</p>
+      </section>
+      <section class="section">
+        <div class="section-title">Reports</div>
         <ul>
-            <li>service:<br />
-                <ul>
-                    <li><a href="./service/jacoco-report/">Jacoco</a></li>
-                    <li><a href="./service/allure-report/">Allure</a></li>
-                    <li><a href="./service/pit-report/">Pit</a></li>
-                </ul>
-            </li>
-            <li>stub:<br />
-                <ul>
-                    <li><a href="./stub/jacoco-report/">Jacoco</a></li>
-                    <li><a href="./stub/allure-report/">Allure</a></li>
-                    <li><a href="./stub/pit-report/">Pit</a></li>
-                </ul>
-            </li>
-            <li>initdb:<br />
-                <ul>
-                    <li><a href="./initdb/jacoco-report/">Jacoco</a></li>
-                    <!-- <li><a href="./initdb/allure-report/">Allure</a></li> -->
-                    <!-- <li><a href="./initdb/allure-report/">Allure</a></li> -->
-                </ul>
-            </li>
+          <li>
+            Service:
+            <ul class="sub-list">
+              <li>
+                <a href="./service/jacoco-report/">Jacoco</a>
+              </li>
+              <li>
+                <a href="./service/allure-report/">Allure</a>
+              </li>
+              <li>
+                <a href="./service/pit-report/">Pit</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            Stub:
+            <ul class="sub-list">
+              <li>
+                <a href="./stub/jacoco-report/">Jacoco</a>
+              </li>
+              <li>
+                <a href="./stub/allure-report/">Allure</a>
+              </li>
+              <li>
+                <a href="./stub/pit-report/">Pit</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            InitDB:
+            <ul class="sub-list">
+              <li>
+                <a href="./initdb/jacoco-report/">Jacoco</a>
+              </li>
+            </ul>
+          </li>
         </ul>
-    </body>
-</hml>
+      </section>
+    </div>
+  </body>
+</html>
