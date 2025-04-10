@@ -196,6 +196,29 @@ services:
     networks:
       - stand-network
 
+  dbgate:
+    image: dbgate/dbgate:6.3.3-alpine
+    container_name: dbgate
+    ports:
+      - "3002:3000"
+    environment:
+      CONNECTIONS: things,owners
+      #things
+      LABEL_things: things
+      URL_things: 'postgresql://things_admin:qwerty@things-db:5432/things_db?options=-c%20search_path%3Dthings_schema'
+      ENGINE_things: postgres@dbgate-plugin-postgres
+      DATABASE_things: things_db
+      #owners
+      LABEL_owners: owners
+      URL_owners: 'postgresql://owners_admin:qwerty@owners-db:5432/owners_db?options=-c%20search_path%3Downers_schema'
+      ENGINE_owners: postgres@dbgate-plugin-postgres
+      DATABASE_owners: owners_db
+    depends_on:  
+      - things-db
+      - owners-db
+    networks:
+      - stand-network
+
   # pgadmin:
   #   container_name: pgadmin_container
   #   image: dpage/pgadmin4:7
