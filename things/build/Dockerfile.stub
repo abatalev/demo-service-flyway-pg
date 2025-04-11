@@ -1,4 +1,14 @@
+FROM bellsoft/liberica-openjre-alpine-musl:17.0.13-12 AS builder
+WORKDIR /builder/
+COPY stub/target/app.jar /builder/app.jar
+RUN java -Djarmode=tools -jar app.jar extract --layers --destination extracted
+RUN ls -la /builder/
+
 FROM bellsoft/liberica-openjre-alpine-musl:17.0.13-12
-COPY stub/target/app.jar /opt/app.jar
+WORKDIR /opt/
 COPY app.sh /opt/app.sh
-ENTRYPOINT /opt/app.sh 
+COPY --from=builder /builder/extracted/dependencies/ /opt/
+COPY --from=builder /builder/extracted/spring-boot-loader/ /opt/
+COPY --from=builder /builder/extracted/snapshot-dependencies/ /opt/
+COPY --from=builder /builder/extracted/application/ /opt/
+ENTRYPOINT [ "/opt/app.sh" ]
