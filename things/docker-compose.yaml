@@ -38,6 +38,7 @@ services:
   things-service:
     image: abatalev/things_service:0.0.1
     environment:
+      JVM_CPUCNT: 2
       DB_HOST: things-db
       DB_USER: things_user
       DB_PASS: qwerty
