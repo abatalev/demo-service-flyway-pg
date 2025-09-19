@@ -187,6 +187,8 @@ services:
     image: grafana/grafana:11.6.0
     volumes:
       - ./config/grafana.yml:/etc/grafana/provisioning/datasources/default.yml
+      - ./config/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
+      - ./config/dashboards:/opt/dashboards
     ports:
       - "3001:3000"
     depends_on:  

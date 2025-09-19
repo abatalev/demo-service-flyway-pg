@@ -13,6 +13,11 @@ Grafana Dashboard
 - remove latest from docker-compose
   - [x] fix for otel/opentelemetry-collector-contrib version 0.136.0
 
+- add grafana dashboard on startup
+   - [x] things
+   - [x] owners
+   - [x] stand
+
 - observability
   - [x] use prometheus for metrics
   - [x] use loki for logs
