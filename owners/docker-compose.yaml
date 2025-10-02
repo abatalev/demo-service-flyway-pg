@@ -66,7 +66,7 @@ services:
 
   # observability
   otel:
-    image: otel/opentelemetry-collector-contrib:latest
+    image: otel/opentelemetry-collector-contrib:0.136.0
     command: [--config=/etc/otel-config.yml]
     volumes:
       - ./config/otel-config.yml:/etc/otel-config.yml:ro
