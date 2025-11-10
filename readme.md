@@ -26,9 +26,9 @@ Grafana Dashboard
   - [x] use grafana for ui
   - [ ] use alertmanager for alerts :-)
 
-- [ ] linters
-    - [ ] shellcheck
-    - [ ] hadolint
+- linters
+  - [x] shellcheck
+  - [x] hadolint
  
 - [ ] versioning
   - use /api/vX/ for all endpoints
@@ -38,7 +38,7 @@ Grafana Dashboard
 - [ ] documentation
   - architecture
 
-- [ ] create second service (owners)   
+- [x] create second service (owners)   
 
 - [ ] fix builddocs (links)
 
