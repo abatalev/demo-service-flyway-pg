@@ -11,11 +11,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.web.client.RestClient;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class OwnersControlerTest {
@@ -25,8 +24,7 @@ public class OwnersControlerTest {
     @LocalServerPort
     private int port;
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+    RestClient restClient = RestClient.create();
 
     static PostgresAdapter adapter;
 
@@ -43,8 +41,13 @@ public class OwnersControlerTest {
     @Feature("New Owner")
     @Test
     void checkNewOwner() {
-        assertThat(restTemplate.postForObject(
-                        "http://localhost:" + port + "/owners/", new Owner("ivanov", "Ivanov"), String.class))
+        assertThat(restClient
+                        .post()
+                        .uri("http://localhost:" + port + "/owners/")
+                        .body(new Owner("ivanov", "Ivanov"))
+                        .retrieve()
+                        .toEntity(String.class)
+                        .getBody())
                 .contains("{\"nickName\":\"ivanov\",\"name\":\"Ivanov\",\"errCode\":0}");
     }
 
@@ -52,7 +55,12 @@ public class OwnersControlerTest {
     @Feature("Get Owner by nickname")
     @Test
     void checkGetOwnerByNickName() throws Exception {
-        assertThat(restTemplate.getForObject("http://localhost:" + port + "/owners/ivanov", String.class))
+        assertThat(restClient
+                        .get()
+                        .uri("http://localhost:" + port + "/owners/ivanov")
+                        .retrieve()
+                        .toEntity(String.class)
+                        .getBody())
                 .contains("{\"nickName\":\"ivanov\",\"name\":\"Ivanov\",\"errCode\":0}");
     }
 }

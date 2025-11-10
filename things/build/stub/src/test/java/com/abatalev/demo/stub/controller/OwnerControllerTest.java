@@ -4,11 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.web.client.RestClient;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class OwnerControllerTest {
@@ -16,8 +15,7 @@ public class OwnerControllerTest {
     @LocalServerPort
     private int port;
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+    private RestClient restClient = RestClient.create();
 
     @BeforeAll
     static void init() {
@@ -27,13 +25,23 @@ public class OwnerControllerTest {
 
     @Test
     void checkGetOwnerIvanov() throws Exception {
-        assertThat(restTemplate.getForObject("http://localhost:" + port + "/owners/ivanov", String.class))
+        assertThat(restClient
+                        .get()
+                        .uri("http://localhost:" + port + "/owners/ivanov")
+                        .retrieve()
+                        .toEntity(String.class)
+                        .getBody())
                 .contains("{\"nickName\":\"ivanov\",\"name\":\"Ivanov\",\"errCode\":0}");
     }
 
     @Test
     void checkGetOwnerPetrov() throws Exception {
-        assertThat(restTemplate.getForObject("http://localhost:" + port + "/owners/petrov", String.class))
+        assertThat(restClient
+                        .get()
+                        .uri("http://localhost:" + port + "/owners/petrov")
+                        .retrieve()
+                        .toEntity(String.class)
+                        .getBody())
                 .contains("{\"errCode\":2,\"errMessage\":\"Owner not found\"}");
     }
 }

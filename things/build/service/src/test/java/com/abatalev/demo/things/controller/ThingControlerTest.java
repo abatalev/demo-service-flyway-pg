@@ -12,11 +12,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.web.client.RestClient;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ThingControlerTest {
@@ -26,8 +25,7 @@ public class ThingControlerTest {
     @LocalServerPort
     private int port;
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+    private RestClient restClient = RestClient.create();
 
     static PostgresAdapter adapter;
     static StubAdapter stub;
@@ -48,8 +46,13 @@ public class ThingControlerTest {
     @Feature("New Thing")
     @Test
     void checkNewThing() {
-        assertThat(restTemplate.postForObject(
-                        "http://localhost:" + port + "/things/ivanov", new Thing("GummyBear"), String.class))
+        assertThat(restClient
+                        .post()
+                        .uri("http://localhost:" + port + "/things/ivanov")
+                        .body(new Thing("GummyBear"))
+                        .retrieve()
+                        .toEntity(String.class)
+                        .getBody())
                 .contains("{\"name\":\"GummyBear\"}");
     }
 
@@ -57,7 +60,12 @@ public class ThingControlerTest {
     @Feature("Get Thing List")
     @Test
     void checkGetThings() throws Exception {
-        assertThat(restTemplate.getForObject("http://localhost:" + port + "/things", String.class))
+        assertThat(restClient
+                        .get()
+                        .uri("http://localhost:" + port + "/things")
+                        .retrieve()
+                        .toEntity(String.class)
+                        .getBody())
                 .contains("[]");
     }
 }

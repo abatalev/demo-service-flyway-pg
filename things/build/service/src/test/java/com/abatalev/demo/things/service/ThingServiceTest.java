@@ -13,7 +13,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 @SpringBootTest
 public class ThingServiceTest {
@@ -57,6 +57,6 @@ public class ThingServiceTest {
     private ThingService getService() {
         return new ThingService(
                 new JdbcTemplate(postgres.getDataSource()),
-                new OwnerGetter(stub.getHost(), stub.getPort(), new RestTemplate()));
+                new OwnerGetter(stub.getHost(), stub.getPort(), RestClient.create()));
     }
 }
