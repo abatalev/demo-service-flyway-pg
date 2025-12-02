@@ -1,6 +1,6 @@
 package com.abatalev.demo.things.service;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.abatalev.demo.things.model.Thing;

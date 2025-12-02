@@ -1,10 +1,9 @@
 package com.abatalev.demo.things;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.abatalev.demo.things.utils.PostgresAdapter;
 import io.qameta.allure.Epic;
-import org.junit.ClassRule;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,7 +12,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @Testcontainers
 public class DbTest {
 
-    @ClassRule
     private static PostgresAdapter adapter;
 
     @BeforeAll

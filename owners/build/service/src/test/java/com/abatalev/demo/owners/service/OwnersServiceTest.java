@@ -1,7 +1,7 @@
 package com.abatalev.demo.owners.service;
 
 import static io.qameta.allure.Allure.step;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.abatalev.demo.owners.model.Owner;
 import com.abatalev.demo.owners.utils.PostgresAdapter;
