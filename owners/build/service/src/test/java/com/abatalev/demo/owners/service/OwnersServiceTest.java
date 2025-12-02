@@ -42,12 +42,12 @@ public class OwnersServiceTest {
         });
         step("Get By NickName Know Owner", () -> {
             Owner owner = service.getByNickName("ivanov");
-            assertEquals(0, owner.errCode);
+            assertEquals(0, owner.getErrCode());
         });
         step("Get By NickName Unknown Owner", () -> {
             Owner owner = service.getByNickName("sidorov");
-            assertEquals(2, owner.errCode);
-            assertEquals("Owner not found", owner.errMessage);
+            assertEquals(2, owner.getErrCode());
+            assertEquals("Owner not found", owner.getErrMessage());
         });
     }
 

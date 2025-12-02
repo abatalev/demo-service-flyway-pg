@@ -6,9 +6,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Owner {
     private String nickName;
-    public String name;
-    public int errCode;
-    public String errMessage;
+    private String name;
+    private int errCode;
+    private String errMessage;
 
     @JsonCreator
     public Owner(String nickName, String name) {
