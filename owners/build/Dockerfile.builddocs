@@ -1,4 +1,4 @@
-FROM nginx:1.27.4-alpine3.21-otel 
+FROM nginx:1.29.5-alpine3.23-otel 
 COPY builddocs/index.html /usr/share/nginx/html/
 COPY service/target/site/jacoco-report/ /usr/share/nginx/html/service/jacoco-report/
 COPY service/target/site/allure-report/ /usr/share/nginx/html/service/allure-report/

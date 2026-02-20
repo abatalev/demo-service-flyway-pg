@@ -57,7 +57,7 @@ services:
       - things-network
 
   things-k6:
-    image: grafana/k6:1.0.0-rc1    
+    image: grafana/k6:1.6.0    
     command: run --tag test-id=123 -o experimental-opentelemetry /scripts/test.js
     volumes:
       - ./build/generator/test.js:/scripts/test.js:ro
@@ -80,7 +80,7 @@ services:
 
   # observability
   otel:
-    image: otel/opentelemetry-collector-contrib:0.136.0
+    image: otel/opentelemetry-collector-contrib:0.145.0
     command: [--config=/etc/otel-config.yml]
     volumes:
       - ./config/otel-config.yml:/etc/otel-config.yml:ro
@@ -93,7 +93,7 @@ services:
       - things-network
 
   prometheus:
-    image: prom/prometheus:v3.2.1
+    image: prom/prometheus:v3.9.1
     command: --config.file=/etc/prometheus/prometheus.yml --log.level=debug
     ports:
       - 9090:9090
@@ -105,7 +105,7 @@ services:
       - things-network
 
   loki:
-    image: grafana/loki:3.2.0
+    image: grafana/loki:3.5.10
     command: -config.file=/etc/loki/local-config.yaml
     volumes:
       - ./config/loki.yaml:/etc/loki/local-config.yaml
@@ -115,7 +115,7 @@ services:
       - things-network
 
   tempo:
-    image: grafana/tempo:2.7.2
+    image: grafana/tempo:2.10.0
     command: [ "-config.file=/etc/tempo.yaml" ]
     volumes:
       - ./config/tempo.yaml:/etc/tempo.yaml
@@ -130,7 +130,7 @@ services:
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-    image: grafana/grafana:11.6.0
+    image: grafana/grafana:12.3.2
     volumes:
       - ./config/grafana.yml:/etc/grafana/provisioning/datasources/default.yml
       - ./config/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
