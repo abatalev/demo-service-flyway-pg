@@ -30,8 +30,11 @@ services:
     environment:
       OTLP_HOST: otel 
       OTLP_DISABLED: false
+      JACOCO_ENABLE: true
     depends_on:
       - otel
+    ports:
+      - "6301:6300"
     networks:
       - things-network      
 
@@ -47,8 +50,10 @@ services:
       OTLP_HOST: otel
       OWNER_HOST: things-stub
       OWNER_PORT: 8080
+      JACOCO_ENABLE: true
     ports:
-      - "8090:8080"  
+      - "8090:8080"
+      - "6300:6300"
     depends_on:
       - things-db
       - things-stub

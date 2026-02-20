@@ -9,7 +9,7 @@ build_docker_image() {
 
     echo "### create docker image for ${LABEL}"
     cd "${CDIR}/build" || exit
-    docker run --rm -i hadolint/hadolint:2.12.1-beta-alpine < "Dockerfile.${NAME}"
+    docker run --rm -i hadolint/hadolint:v2.14.0-alpine < "Dockerfile.${NAME}"
     if ! docker buildx build -f "Dockerfile.${NAME}" -t "abatalev/${GROUPNAME}_${NAME}:${VERSION}" .; then
         echo "### aborted - ${LABEL}"
         exit 1
@@ -48,7 +48,7 @@ clean_maven() {
 echo "Demo Service with Stub, Postgres and Flyway"
 
 find . -name '*.sh' \
-  -exec docker run --rm -it -v "${CDIR}:/mnt" koalaman/shellcheck:v0.10.0 {} \;
+  -exec docker run --rm -it -v "${CDIR}:/mnt" koalaman/shellcheck:v0.11.0 {} \;
 
 build_component "db" "postgres"
 build_component "initdb" "initdb"

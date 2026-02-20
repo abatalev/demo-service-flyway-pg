@@ -1,11 +1,15 @@
+FROM alpine:3.23.3 AS builder_agent
+RUN apk --no-cache add ca-certificates wget unzip
+RUN wget -O jacoco.zip http://search.maven.org/remotecontent?filepath=org/jacoco/jacoco/0.8.14/jacoco-0.8.14.zip && unzip jacoco.zip
+
 FROM bellsoft/liberica-openjre-alpine-musl:21.0.10-10 AS builder
 WORKDIR /builder/
 COPY service/target/app.jar /builder/app.jar
 RUN java -Djarmode=tools -jar app.jar extract --layers --destination extracted
-RUN ls -la /builder/
 
 FROM bellsoft/liberica-openjre-alpine-musl:21.0.10-10
 WORKDIR /opt/
+COPY --from=builder_agent lib/jacocoagent.jar /opt/app/jacocoagent.jar
 COPY app.sh /opt/app.sh
 COPY --from=builder /builder/extracted/dependencies/ /opt/
 COPY --from=builder /builder/extracted/spring-boot-loader/ /opt/

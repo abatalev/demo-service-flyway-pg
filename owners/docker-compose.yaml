@@ -34,8 +34,10 @@ services:
       DB_PORT: 5432
       OTLP_DISABLED: false
       OTLP_HOST: otel
+      JACOCO_ENABLE: true
     ports:
       - "8090:8080"  
+      - "6300:6300"
     depends_on:
       - owners-db
       - otel
@@ -43,7 +45,7 @@ services:
       - owners-network
 
   owners-k6:
-    image: grafana/k6:1.6.0 
+    image: grafana/k6:1.6.0    
     command: run --tag test-id=123 -o experimental-opentelemetry /scripts/test.js
     volumes:
       - ./build/generator/test.js:/scripts/test.js:ro

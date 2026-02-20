@@ -30,6 +30,7 @@ add_java_opt "-XX:MaxRAMFraction=" "${JVM_MAXRAMFRAC}"
 add_java_opt "-XX:MinRAMFraction=" "${JVM_MINRAMFRAC}"
 add_java_opt_bool "-XX:+UseStringDeduplication" "${JVM_STRDEDUP}"
 add_java_opt_bool "-XX:+UseParallelGC" "${JVM_PARALLELGC}"
+add_java_opt_bool "-javaagent:/opt/app/jacocoagent.jar=output=tcpserver,address=*,port=6300,destfile=jacoco.exec" "${JACOCO_ENABLE}"
 
 echo "JAVA_OPTS ${JAVA_OPTS}"
 
