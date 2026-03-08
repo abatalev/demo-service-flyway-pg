@@ -66,9 +66,9 @@ build_component "service" "service"
 
 build_component "builddocs" "builddocs"
 
-clean_maven "initdb"
-clean_maven "stub"
-clean_maven "service"
+# clean_maven "initdb"
+# clean_maven "stub"
+# clean_maven "service"
 
 #docker run --rm -p 8087:80 abatalev/builddocs:0.0.1 
 #docker run --rm -p 8080:8080 abatalev/service:0.0.1
