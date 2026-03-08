@@ -12,7 +12,7 @@ build_docker_image() {
     docker run --rm -i hadolint/hadolint:2.12.1-beta-alpine < "Dockerfile.${NAME}"
     if ! docker buildx build -f "Dockerfile.${NAME}" -t "abatalev/${GROUPNAME}_${NAME}:${VERSION}" .; then
         echo "### aborted - ${LABEL}"
-        exit
+        exit 1
     fi
 }
 
@@ -24,7 +24,7 @@ build_maven() {
     cd "${CDIR}/build/${NAME}" || exit
     if ! mvn clean install; then
         echo "### aborted - ${LABEL}"
-        exit
+        exit 1
     fi
 }
 
