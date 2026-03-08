@@ -25,6 +25,8 @@ public class ThingServiceTest {
     static void init() {
         System.setProperty("OTLP_HOST", "example.com");
         System.setProperty("OTLP_DISABLED", "true");
+        System.setProperty("OWNER_HOST", "owner.example.com");
+        System.setProperty("OWNER_PORT", "8080");
         postgres = new PostgresAdapter();
         stub = new StubAdapter();
     }
