@@ -1,6 +1,16 @@
 services:
   things-builddocs:
     image: abatalev/things_builddocs:0.0.1
+    deploy:
+      replicas: ${THINGS_BUILD_DOCS_REPLICAS}
+      resources:
+        limits:
+          cpus: ${THINGS_BUILD_DOCS_CPUS}
+          memory: ${THINGS_BUILD_DOCS_MEMORY}
+        reservations:
+          cpus: '0.25'
+          memory: 50M
+    cpuset: "1"
     ports:
       - 8087:80
     networks:
@@ -19,6 +29,16 @@ services:
 
   things-db:
     image: abatalev/things_postgres:0.0.1
+    deploy:
+      replicas: ${THINGS_DB_REPLICAS}
+      resources:
+        limits:
+          cpus: ${THINGS_DB_CPUS}
+          memory: ${THINGS_DB_MEMORY}
+        reservations:
+          cpus: '0.25'
+          memory: 50M
+    cpuset: "1"
     environment:
       POSTGRES_PASSWORD: postgres
     networks:
@@ -26,6 +46,16 @@ services:
 
   things-initdb:
     image: abatalev/things_initdb:0.0.1
+    deploy:
+      replicas: ${THINGS_INITDB_REPLICAS}
+      resources:
+        limits:
+          cpus: ${THINGS_INITDB_CPUS}
+          memory: ${THINGS_INITDB_MEMORY}
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1" 
     environment:
       DB_HOST: things-db
       DB_USER: things_admin
@@ -38,10 +68,20 @@ services:
 
   things-stub:
     image: abatalev/things_stub:0.0.1
+    deploy:
+      replicas: ${THINGS_STUB_REPLICAS}
+      resources:
+        limits:
+          cpus: ${THINGS_STUB_CPUS}
+          memory: ${THINGS_STUB_MEMORY}
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"
     environment:
       OTLP_HOST: otel
       OTLP_DISABLED: false
-      JACOCO_ENABLE: true
+      JACOCO_ENABLE: ${THINGS_STUB_JACOCO_ENABLE}
     depends_on:
       - otel
     networks:
@@ -49,8 +89,18 @@ services:
 
   things-service:
     image: abatalev/things_service:0.0.1
+    deploy:
+      replicas: ${THINGS_SERVICE_REPLICAS}
+      resources:
+        limits:
+          cpus: ${THINGS_SERVICE_CPUS}
+          memory: ${THINGS_SERVICE_MEMORY}
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"
     environment:
-      JVM_CPUCNT: 2
+      JVM_CPUCNT: ${THINGS_SERVICE_JVM_CPUCNT}
       DB_HOST: things-db
       DB_USER: things_user
       DB_PASS: qwerty
@@ -59,7 +109,7 @@ services:
       OTLP_HOST: otel
       OWNER_HOST: things-stub
       OWNER_PORT: 8080
-      JACOCO_ENABLE: true
+      JACOCO_ENABLE: ${THINGS_SERVICE_JACOCO_ENABLE}
     ports:
       - "8090:8080"
     depends_on:
@@ -71,6 +121,16 @@ services:
 
   things-k6:
     image: grafana/k6:1.6.0
+    deploy:
+      replicas: ${THINGS_K6_REPLICAS}
+      resources:
+        limits:
+          cpus: ${THINGS_K6_CPUS}
+          memory: ${THINGS_K6_MEMORY}
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"   
     command: run --tag test-id=123 -o experimental-opentelemetry /scripts/test.js
     volumes:
       - ./build/generator/test.js:/scripts/test.js:ro
@@ -94,6 +154,16 @@ services:
   # observability
   otel:
     image: otel/opentelemetry-collector-contrib:0.145.0
+    deploy:
+      replicas: ${OTEL_REPLICAS}
+      resources:
+        limits:
+          cpus: ${OTEL_CPUS}
+          memory: ${OTEL_MEMORY}
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"
     command: [--config=/etc/otel-config.yml]
     volumes:
       - ./config/otel-config.yml:/etc/otel-config.yml:ro
@@ -105,8 +175,42 @@ services:
     networks:
       - things-network
 
+  cadvisor: 
+    image: ghcr.io/google/cadvisor:0.56.2
+    deploy:
+      replicas: ${CADVISOR_REPLICAS}
+      resources:
+        limits:
+          cpus: ${CADVISOR_CPUS}
+          memory: ${CADVISOR_MEMORY}
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    restart: always 
+    ports:
+      - "8095:8080"  
+    volumes: 
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+    networks:
+      - things-network
+
   prometheus:
     image: prom/prometheus:v3.9.1
+    deploy:
+      replicas: ${PROMETHEUS_REPLICAS}
+      resources:
+        limits:
+          cpus: ${PROMETHEUS_CPUS}
+          memory: ${PROMETHEUS_MEMORY}
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"
     command: --config.file=/etc/prometheus/prometheus.yml --log.level=debug
     ports:
       - 9090:9090
@@ -114,11 +218,22 @@ services:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     links:
       - otel
+      - cadvisor
     networks:
       - things-network
 
   loki:
     image: grafana/loki:3.5.10
+    deploy:
+      replicas: ${LOKI_REPLICAS}
+      resources:
+        limits:
+          cpus: ${LOKI_CPUS}
+          memory: ${LOKI_MEMORY}
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"
     command: -config.file=/etc/loki/local-config.yaml
     volumes:
       - ./config/loki.yaml:/etc/loki/local-config.yaml
@@ -128,8 +243,18 @@ services:
       - things-network
 
   tempo:
-    image: grafana/tempo:2.10.7
-    command: ["-config.file=/etc/tempo.yaml"]
+    image: grafana/tempo:2.10.0
+    deploy:
+      replicas: ${TEMPO_REPLICAS}
+      resources:
+        limits:
+          cpus: ${TEMPO_CPUS}
+          memory: ${TEMPO_MEMORY}
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"
+    command: [ "-config.file=/etc/tempo.yaml" ]
     volumes:
       - ./config/tempo.yaml:/etc/tempo.yaml
     ports:
@@ -140,10 +265,20 @@ services:
       - things-network
 
   grafana:
+    image: grafana/grafana:12.3.2
+    deploy:
+      replicas: ${GRAFANA_REPLICAS}
+      resources:
+        limits:
+          cpus: ${GRAFANA_CPUS}
+          memory: ${GRAFANA_MEMORY}
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-    image: grafana/grafana:12.3.2
     volumes:
       - ./config/grafana.yml:/etc/grafana/provisioning/datasources/default.yml
       - ./config/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml

@@ -1,6 +1,16 @@
 services:
   owners-builddocs:
     image: abatalev/owners_builddocs:0.0.1
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"
     ports:
       - 8087:80
     networks:
@@ -8,6 +18,16 @@ services:
 
   owners-covaggr:
     image: abatalev/owners_covaggr:0.0.1
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"
     ports:
       - 8088:8080
     depends_on:
@@ -17,6 +37,16 @@ services:
 
   owners-db:
     image: abatalev/owners_postgres:0.0.1
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"
     environment:
       POSTGRES_PASSWORD: postgres
     networks:
@@ -24,6 +54,16 @@ services:
 
   owners-initdb:
     image: abatalev/owners_initdb:0.0.1
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"
     environment:
       DB_HOST: owners-db
       DB_USER: owners_admin
@@ -36,6 +76,16 @@ services:
 
   owners-service:
     image: abatalev/owners_service:0.0.1
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"
     environment:
       DB_HOST: owners-db
       DB_USER: owners_user
@@ -53,7 +103,17 @@ services:
       - owners-network
 
   owners-k6:
-    image: grafana/k6:1.6.0
+    image: grafana/k6:1.6.0    
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"
     command: run --tag test-id=123 -o experimental-opentelemetry /scripts/test.js
     volumes:
       - ./build/generator/test.js:/scripts/test.js:ro
@@ -77,6 +137,16 @@ services:
   # observability
   otel:
     image: otel/opentelemetry-collector-contrib:0.145.0
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"
     command: [--config=/etc/otel-config.yml]
     volumes:
       - ./config/otel-config.yml:/etc/otel-config.yml:ro
@@ -88,8 +158,42 @@ services:
     networks:
       - owners-network
 
+  cadvisor: 
+    image: ghcr.io/google/cadvisor:0.56.2
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    restart: always 
+    ports:
+      - "8095:8080"  
+    volumes: 
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+    networks:
+      - owners-network
+
   prometheus:
     image: prom/prometheus:v3.9.1
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"
     command: --config.file=/etc/prometheus/prometheus.yml --log.level=debug
     ports:
       - 9090:9090
@@ -97,11 +201,22 @@ services:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     links:
       - otel
+      - cadvisor
     networks:
       - owners-network
 
   loki:
     image: grafana/loki:3.5.10
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"
     command: -config.file=/etc/loki/local-config.yaml
     volumes:
       - ./config/loki.yaml:/etc/loki/local-config.yaml
@@ -111,8 +226,18 @@ services:
       - owners-network
 
   tempo:
-    image: grafana/tempo:2.10.7
-    command: ["-config.file=/etc/tempo.yaml"]
+    image: grafana/tempo:2.10.0
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"
+    command: [ "-config.file=/etc/tempo.yaml" ]
     volumes:
       - ./config/tempo.yaml:/etc/tempo.yaml
     ports:
@@ -123,14 +248,24 @@ services:
       - owners-network
 
   grafana:
-    environment:
-      - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
     image: grafana/grafana:12.3.2
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    cpuset: "1"
     volumes:
       - ./config/grafana.yml:/etc/grafana/provisioning/datasources/default.yml
       - ./config/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
       - ./config/dashboards:/opt/dashboards
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
     ports:
       - "3001:3000"
     depends_on:
