@@ -1,0 +1,20 @@
+services:
+  - id: owners-service
+    name: "Owners Service"
+    # Шаблон URL для загрузки исходников (опционально)
+    sources_url_pattern: "http://repo.example.com/things/{{service}}/{{version}}/sources.jar"
+    versions:
+      - version: "0.0.1"
+        # Пути к исходникам и class-файлам для этой версии
+        source_path: /app/data/owners-service/sources
+        class_path: /app/data/owners-service/classes
+    instances:
+      - host: owners-service
+        port: 6300
+        version: "0.0.1"
+
+    poll_interval: 60s
+    version_detection:
+      enabled: true
+      endpoint: "/version"   # HTTP‑путь, возвращающий версию в plain text
+      timeout: 5s

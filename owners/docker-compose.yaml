@@ -6,6 +6,15 @@ services:
     networks:
       - owners-network 
 
+  owners-covaggr:
+    image: abatalev/owners_covaggr:0.0.1
+    ports:
+      - 8088:8080
+    depends_on:
+      - owners-service
+    networks:
+      - owners-network 
+
   owners-db:
     image: abatalev/owners_postgres:0.0.1
     environment:
@@ -37,7 +46,6 @@ services:
       JACOCO_ENABLE: true
     ports:
       - "8090:8080"  
-      - "6300:6300"
     depends_on:
       - owners-db
       - otel

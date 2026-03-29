@@ -1,0 +1,15 @@
+FROM ghcr.io/abatalev/covaggregator:0.1.4
+
+WORKDIR /app
+
+# Копируем предварительно собранные отчёты JaCoCo из example
+COPY service/src/main/java/ ./data/owners-service/sources
+COPY service/target/classes/ ./data/owners-service/classes
+COPY service/target/jacoco.exec ./data/owners-service/
+
+# Создаём конфигурационный файл-пример
+COPY covaggr/config.yaml ./config.yaml
+
+EXPOSE 8080
+
+CMD [ "--config", "/app/config.yaml"]

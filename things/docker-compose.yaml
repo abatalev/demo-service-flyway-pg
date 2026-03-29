@@ -6,6 +6,17 @@ services:
     networks:
       - things-network
 
+
+  things-covaggr:
+    image: abatalev/things_covaggr:0.0.1
+    ports:
+      - 8088:8080
+    depends_on:
+      - things-service
+      - things-stub
+    networks:
+      - things-network
+
   things-db:
     image: abatalev/things_postgres:0.0.1
     environment:
@@ -33,8 +44,6 @@ services:
       JACOCO_ENABLE: true
     depends_on:
       - otel
-    ports:
-      - "6301:6300"
     networks:
       - things-network      
 
@@ -53,7 +62,6 @@ services:
       JACOCO_ENABLE: true
     ports:
       - "8090:8080"
-      - "6300:6300"
     depends_on:
       - things-db
       - things-stub

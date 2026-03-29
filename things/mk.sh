@@ -65,6 +65,7 @@ build_component "service" "service"
 # mvn clean test jacoco:report org.pitest:pitest-maven:mutationCoverage org.pitest:pitest-maven:report allure:report
 
 build_component "builddocs" "builddocs"
+build_component "covaggr" "covaggr"
 
 # clean_maven "initdb"
 # clean_maven "stub"
