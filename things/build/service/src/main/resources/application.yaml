@@ -22,10 +22,11 @@ logging:
   level:
     root: INFO
 management:
+  info.git.mode: full
   endpoints:
     web:
       exposure:
-        include: "health,prometheus"
+        include: "health,prometheus,info"
     health:
       show-details: always
   metrics:
