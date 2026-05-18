@@ -61,7 +61,7 @@ otel:
     otlp:
       endpoint: "http://${OTLP_HOST}:4318"
   propagators:
-  - tracecontext
+    - tracecontext
   resource:
     attributes:
       service:

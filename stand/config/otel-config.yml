@@ -29,7 +29,7 @@ service:
     metrics:
       receivers: [otlp]
       processors: [attributes]
-      exporters: [debug,prometheus]
+      exporters: [debug, prometheus]
     traces:
       receivers: [otlp]
       exporters: [debug, otlp/tempo]

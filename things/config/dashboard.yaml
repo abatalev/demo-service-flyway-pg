@@ -12,11 +12,11 @@ apiVersion: 1
 #       foldersFromFilesStructure: true
 
 providers:
-- name: 'default'
-  orgId: 1
-  folder: ''
-  type: file
-  disableDeletion: false
-  updateIntervalSeconds: 10
-  options:
-    path: /opt/dashboards
+  - name: 'default'
+    orgId: 1
+    folder: ''
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    options:
+      path: /opt/dashboards

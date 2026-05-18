@@ -1,0 +1,172 @@
+when:
+  event: [push]
+
+steps:
+
+  # === Phase 1: Linters & security (no dependencies, parallel) ===
+
+  trivy-fs:
+    image: aquasec/trivy:0.71.2
+    commands:
+      - trivy fs --severity HIGH,CRITICAL .
+    volumes:
+      - trivy_cache:/root/.cache/trivy
+
+  shellcheck:
+    image: pipelinecomponents/shellcheck:0.10.0
+    commands:
+      - find . -name '*.sh' -exec shellcheck -S warning {} +
+
+  hadolint:
+    image: hadolint/hadolint:v2.14.0-alpine
+    commands:
+      - find . -name 'Dockerfile.*' -exec hadolint --failure-threshold error {} +
+
+  yamllint:
+    image: cytopia/yamllint:1
+    commands:
+      - yamllint .
+
+  # === Phase 2: Build & docker images that don't need maven artifacts (parallel) ===
+
+  maven-things:
+    image: maven:3.9.16-eclipse-temurin-21-alpine
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - apk add docker-cli
+      - echo '<settings><mirrors><mirror><id>nexus</id><mirrorOf>*</mirrorOf><url>http://192.168.0.18:8090/repository/maven-central/</url></mirror></mirrors></settings>' > /tmp/mvn-settings.xml
+      - docker build -t abatalev/things_postgres:0.0.1 -f things/build/Dockerfile.postgres things/build/
+      - cd things/build/initdb && mvn -s /tmp/mvn-settings.xml clean install -Dallure.maven.skip=true
+      - cd ../stub && mvn -s /tmp/mvn-settings.xml clean install -Dallure.maven.skip=true
+      - docker build -t abatalev/things_stub:0.0.1 -f ../Dockerfile.stub ..
+      - cd ../service && mvn -s /tmp/mvn-settings.xml clean verify -Dallure.maven.skip=true
+    depends_on:
+      - docker-things-initdb
+      - shellcheck
+      - hadolint
+      - yamllint
+
+  maven-owners:
+    image: maven:3.9.16-eclipse-temurin-21-alpine
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    commands:
+      - apk add docker-cli
+      - echo '<settings><mirrors><mirror><id>nexus</id><mirrorOf>*</mirrorOf><url>http://192.168.0.18:8090/repository/maven-central/</url></mirror></mirrors></settings>' > /tmp/mvn-settings.xml
+      - docker build -t abatalev/owners_postgres:0.0.1 -f owners/build/Dockerfile.postgres owners/build/
+      - cd owners/build/initdb && mvn -s /tmp/mvn-settings.xml clean install -Dallure.maven.skip=true
+      - cd ../service && mvn -s /tmp/mvn-settings.xml clean verify -Dallure.maven.skip=true
+    depends_on:
+      - docker-owners-initdb
+      - shellcheck
+      - hadolint
+      - yamllint
+
+  docker-things-initdb:
+    image: woodpeckerci/plugin-docker-buildx:6.1.0
+    settings:
+      mirror: http://192.168.0.18:8090/repository/docker-hub-proxy/
+      dry_run: true
+      dockerfile: things/build/Dockerfile.initdb
+      context: things/build/
+      repo: abatalev/things_initdb
+      tags: 0.0.1
+    depends_on:
+      - shellcheck
+      - hadolint
+      - yamllint
+
+  docker-owners-initdb:
+    image: woodpeckerci/plugin-docker-buildx:6.1.0
+    settings:
+      mirror: http://192.168.0.18:8090/repository/docker-hub-proxy/
+      dry_run: true
+      dockerfile: owners/build/Dockerfile.initdb
+      context: owners/build/
+      repo: abatalev/owners_initdb
+      tags: 0.0.1
+    depends_on:
+      - shellcheck
+      - hadolint
+      - yamllint
+
+  # === Phase 3: Docker images for things (depend on maven-things) ===
+
+  docker-things-service:
+    image: woodpeckerci/plugin-docker-buildx:6.1.0
+    settings:
+      mirror: http://192.168.0.18:8090/repository/docker-hub-proxy/
+      dry_run: true
+      dockerfile: things/build/Dockerfile.service
+      context: things/build/
+      repo: abatalev/things_service
+      tags: 0.0.1
+    depends_on:
+      - maven-things
+
+  docker-things-builddocs:
+    image: woodpeckerci/plugin-docker-buildx:6.1.0
+    settings:
+      mirror: http://192.168.0.18:8090/repository/docker-hub-proxy/
+      dry_run: true
+      dockerfile: things/build/Dockerfile.builddocs
+      context: things/build/
+      repo: abatalev/things_builddocs
+      tags: 0.0.1
+    depends_on:
+      - maven-things
+
+  docker-things-covaggr:
+    image: woodpeckerci/plugin-docker-buildx:6.1.0
+    settings:
+      mirror: http://192.168.0.18:8090/repository/docker-hub-proxy/
+      dry_run: true
+      dockerfile: things/build/Dockerfile.covaggr
+      context: things/build/
+      repo: abatalev/things_covaggr
+      tags: 0.0.1
+    depends_on:
+      - maven-things
+
+  # === Phase 4: Docker images for owners (depend on maven-owners) ===
+
+  docker-owners-service:
+    image: woodpeckerci/plugin-docker-buildx:6.1.0
+    settings:
+      mirror: http://192.168.0.18:8090/repository/docker-hub-proxy/
+      dry_run: true
+      dockerfile: owners/build/Dockerfile.service
+      context: owners/build/
+      repo: abatalev/owners_service
+      tags: 0.0.1
+    depends_on:
+      - maven-owners
+
+  docker-owners-builddocs:
+    image: woodpeckerci/plugin-docker-buildx:6.1.0
+    settings:
+      mirror: http://192.168.0.18:8090/repository/docker-hub-proxy/
+      dry_run: true
+      dockerfile: owners/build/Dockerfile.builddocs
+      context: owners/build/
+      repo: abatalev/owners_builddocs
+      tags: 0.0.1
+    depends_on:
+      - maven-owners
+
+  docker-owners-covaggr:
+    image: woodpeckerci/plugin-docker-buildx:6.1.0
+    settings:
+      mirror: http://192.168.0.18:8090/repository/docker-hub-proxy/
+      dry_run: true
+      dockerfile: owners/build/Dockerfile.covaggr
+      context: owners/build/
+      repo: abatalev/owners_covaggr
+      tags: 0.0.1
+    depends_on:
+      - maven-owners
+
+
+volumes:
+  trivy_cache:

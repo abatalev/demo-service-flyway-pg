@@ -3,16 +3,16 @@ spring:
     banner-mode: "off"
   application:
     name: stub
-  # flyway:
-  #   enabled: false
-  # datasource:
-  #   driver: org.postgresql.Driver
-  #   url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/things_db?currentSchema=things_schema
-  #   username: ${DB_USER}
-  #   password: ${DB_PASS}
-  #   hikari:
-  #     connectionTimeout: 20000
-  #     maximumPoolSize: 5
+# flyway:
+#   enabled: false
+# datasource:
+#   driver: org.postgresql.Driver
+#   url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/things_db?currentSchema=things_schema
+#   username: ${DB_USER}
+#   password: ${DB_PASS}
+#   hikari:
+#     connectionTimeout: 20000
+#     maximumPoolSize: 5
 
 logging:
   level:
@@ -52,9 +52,9 @@ otel:
   traces.exporter: otlp
   logs.exporter: otlp
   metrics.exporter: otlp
-  metric.export.interval: 5000 #Export metrics each five seconds
+  metric.export.interval: 5000  # Export metrics each five seconds
   instrumentation:
-    micrometer.enabled: true #Enabe Micrometer metrics bridge
+    micrometer.enabled: true  # Enable Micrometer metrics bridge
     jdbc.enabled: true
     logback-mdc.enabled: true
   exporter:

@@ -1,0 +1,16 @@
+extends: default
+
+ignore: |
+  .yamllint
+  **/.allure
+
+rules:
+  line-length:
+    max: 200
+    level: error
+  document-start: disable
+  truthy: disable
+  comments-indentation: disable
+  indentation: disable
+  brackets: disable
+  empty-lines: disable

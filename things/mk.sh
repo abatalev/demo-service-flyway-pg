@@ -50,6 +50,9 @@ echo "Demo Service with Stub, Postgres and Flyway"
 find . -name '*.sh' \
   -exec docker run --rm -it -v "${CDIR}:/mnt" koalaman/shellcheck:v0.10.0 {} \;
 
+docker run --rm -v "${CDIR}:/workdir" -w /workdir \
+  pipelinecomponents/yamllint:0.35.9 yamllint -c ../.yamllint .
+
 build_component "db" "postgres"
 build_component "initdb" "initdb"
 build_component "stub" "stub"

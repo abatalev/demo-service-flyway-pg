@@ -9,7 +9,7 @@ services:
     instances:
       - host: things-service
         port: 6300
-        version: "0.0.1"   
+        version: "0.0.1"
     poll_interval: 60s
 
   - id: things-stub
