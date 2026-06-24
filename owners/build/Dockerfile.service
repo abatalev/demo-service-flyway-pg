@@ -1,5 +1,5 @@
 FROM alpine:3.23.3 AS builder_agent
-RUN apk --no-cache add ca-certificates=20260413-r0 wget=1.25.0-r2 unzip=6.0-r16
+RUN apk --no-cache add ca-certificates=20260611-r0 wget=1.25.0-r2 unzip=6.0-r16
 RUN wget -O jacoco.zip http://search.maven.org/remotecontent?filepath=org/jacoco/jacoco/0.8.14/jacoco-0.8.14.zip && unzip jacoco.zip
 
 FROM bellsoft/liberica-openjre-alpine-musl:21.0.10-10 AS builder
